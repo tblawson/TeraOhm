@@ -5,8 +5,9 @@ Created on Tues 1st July 2019
 T.lawson
 """
 
-import visa
+import pyvisa as visa
 import time
+
 
 RM = visa.ResourceManager()
 
@@ -14,7 +15,6 @@ RM = visa.ResourceManager()
 Build list of channel labels: '01', '02', ...'15', '16'
 """
 CHANS = []
-#
 for c in range(16):
     CHANS.append(str(c+1).zfill(2))
 
@@ -41,7 +41,7 @@ class Instrument(Device):
         self.demo = demo
         self.is_open = False
         self.can_talk = can_talk
-        self.delay = 0.2
+        self.delay = 0.2 # In seconds
         self.instr = None
 
         self.str_addr = str_addr  # e.g.: 'GPIB0::4::INSTR'
@@ -57,14 +57,15 @@ class Instrument(Device):
         if self.str_addr in RM.list_resources():
             try:
                 self.instr = RM.open_resource(self.str_addr)
-                self.is_open = True
-                self.demo = False
-                print('Opened session {} to {}.'.format(self.instr.session, self.str_addr))
-                return self.instr
             except visa.VisaIOError as err:
                 print(err)
                 print('Failed to open visa session to {}.'.format(self.str_addr))
                 return None
+            else:
+                self.is_open = True
+                self.demo = False
+                print('Opened session {} to {}.'.format(self.instr.session, self.str_addr))
+                return self.instr
         else:
             print('No instrument found at bus address {}!'.format(self.addr))
             return None
@@ -135,4 +136,8 @@ class Instrument(Device):
             print(err)
 
     def get_id(self):
-        return self.instr.query('*IDN?')
+        try:
+            return self.instr.query('*IDN?')
+        except AttributeError as msg:  # self.instr is None so it has no query() method.
+            print(msg, '- No physical instrument present.')
+            return 'NONE_INSTR'

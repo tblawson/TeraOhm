@@ -17,7 +17,7 @@ G6564 = dev.Instrument("GPIB0::5::INSTR")
 
 G6530.test()
 time.sleep(1)
-# G6564.test()
+G6564.test()
 time.sleep(1)
 
 G6530.send_cmd('SYST:VERB')
