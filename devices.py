@@ -41,7 +41,7 @@ class Instrument(Device):
         self.demo = demo
         self.is_open = False
         self.can_talk = can_talk
-        self.delay = 0.2 # In seconds
+        self.delay = 0.2  # In seconds
         self.instr = None
 
         self.str_addr = str_addr  # e.g.: 'GPIB0::4::INSTR'
