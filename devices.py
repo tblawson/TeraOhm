@@ -7,16 +7,75 @@ T.lawson
 
 import pyvisa as visa
 import time
-
+import GMHstuff as GMH
 
 RM = visa.ResourceManager()
+MAX_CHANNELS = 16
 
-"""
-Build list of channel labels: '01', '02', ...'15', '16'
-"""
-CHANS = []
-for c in range(16):
-    CHANS.append(str(c+1).zfill(2))
+
+class GMHSensor(GMH.GMHSensor):
+    """
+    A derived class of GMHstuff.GMHSensor with additional functionality.
+    On creation, an instance needs:
+        * A description string 'descr' eg: 'GMHs/n628',
+        * A 'role' - this could be a scanner channel number,
+        * A 'port' - the sensor's COM port number.
+    """
+    def __init__(self, descr, role, port):
+        self.descr = descr
+        self.role = role
+        self.port = port
+        # self.port = int(INSTR_DATA[self.descr]['addr'])
+        super().__init__(self.port)
+        self.demo = True
+        self.set_power_off_time(120)  # Ensure sensor stays on during whole run.
+
+    def test(self, meas):
+        """
+        Test that the device is functioning.
+        :argument meas (str) - an alias for the measurement type:
+            'T', 'P', 'RH', 'T_dew', 't_wb', 'H_atm' or 'H_abs'.
+        :returns measurement tuple: (<value>, <unit string>)
+        """
+        print('\ndevices.GMH_Sensor.Test()...')
+        self.open_port()
+        reply = self.measure(meas)
+        self.close()
+        return reply
+
+    def init(self):
+        pass
+
+
+class Resistor:
+    """
+    A combined resistor / temperature-sensor object.
+    """
+    def __init__(self, name, nom_val, temp_sensor):
+        """
+        parameters:
+            name (str) - decription of resistor, eg: 'H100M 1G'.
+            nom_val (int) - nominal resistance, eg: 1e9.
+            temp_sensor (GMHSensor object) - an instance of class GMHSensor.
+        """
+        self.name = name
+        self.nom_val = nom_val
+        self.temp_sensor = temp_sensor
+
+
+class Channel:
+    """
+    A configuration object that combines a scanner channel number,
+    and a Resistor object.
+    """
+    def __init__(self, index, resistor=None):
+        """
+        index = channel number on 6564 scanner.
+        resistor is a Resistor object, representing a resistor assigned to this channel.
+        """
+        self.index = index
+        assert index <= MAX_CHANNELS, 'Channel index too large!'
+        self.resistor = resistor
 
 
 class Device(object):
@@ -37,17 +96,18 @@ class Instrument(Device):
     """
     A class for representing a Guildline 6530 TeraOhmmeter or 6564 Scanner
     """
-    def __init__(self, str_addr, demo=True, can_talk=False):  # Default to demo mode, can't talk
+    def __init__(self, str_addr, chans=MAX_CHANNELS, demo=True, can_talk=False):  # Default to demo mode, can't talk
         self.demo = demo
         self.is_open = False
         self.can_talk = can_talk
         self.delay = 0.2  # In seconds
         self.instr = None
+        self.n_chans = chans
 
         self.str_addr = str_addr  # e.g.: 'GPIB0::4::INSTR'
         self.addr = int(str_addr.strip('GPIB0::INSTR'))  # e.g.: 4
 
-        self.open()
+        self.open()  # Open physical instrument on instantiation.
 
     def open(self):
         """
@@ -103,7 +163,7 @@ class Instrument(Device):
         else:  # A command - no reply expected
             try:
                 self.instr.write(s)
-            except visa.VisaIOError as err:
+            except (visa.VisaIOError, AttributeError) as err:
                 print(err)
             time.sleep(self.delay)
             return default_reply
@@ -121,21 +181,27 @@ class Instrument(Device):
             self.scan_test()
 
     def scan_test(self):
+        """
+        Default test-method for model 6564 scanner.
+        """
         print('Running scanner test...')
         try:
-            for ch in CHANS:
+            for ch in range(MAX_CHANNELS):
                 print(ch, end=' ')
-                self.instr.write('A00')
+                self.send_cmd('A00')
                 time.sleep(self.delay)
-                self.instr.write('A' + ch)
+                self.send_cmd('A' + str(ch))
                 time.sleep(self.delay)
-            self.instr.write('A00')
+            self.send_cmd('A00')
             time.sleep(self.delay)
             print('')
         except visa.VisaIOError as err:
             print(err)
 
     def get_id(self):
+        """
+        Default test-method for model 6530 teraohmmeter.
+        """
         try:
             return self.instr.query('*IDN?')
         except AttributeError as msg:  # self.instr is None so it has no query() method.

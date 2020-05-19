@@ -1,0 +1,82 @@
+{
+	"none": {
+		"addr": 0,
+		"str_addr": "NOADDRESS",
+		"test": null,
+		"demo": true,
+		"role": null
+	},
+	"GMH:s/n628": {
+		"addr": 5,
+		"str_addr": "COM5",
+		"test": "T",
+		"demo": true,
+		"role": null,
+		"T_correction": {
+			"value": 0.0,
+			"uncert": 7.6e-3,
+			"dof": 18.1,
+			"label": "GMH628_cor",
+			"Reference_comment": "Temperature/2018/724. Units are deg C"
+		}
+	},
+	"GMH:s/n367": {
+		"addr": 10,
+		"str_addr": "COM10",
+		"test": "RH",
+		"demo": true,
+		"role": null,
+		"T_correction": {
+			"value": 0.0,
+			"uncert": 0.0,
+			"dof": "inf",
+			"label": "GMH367T_cor",
+			"Reference_comment": ""
+		},
+		"P_correction": {
+			"value": 0.0,
+			"uncert": 0.0,
+			"dof": "inf",
+			"label": "GMH367P_cor",
+			"Reference_comment": ""
+		},
+		"RH_correction": {
+			"value": 0.0,
+			"uncert": 0.0,
+			"dof": "inf",
+			"label": "GMH367RH_cor",
+			"Reference_comment": ""
+		}
+	},
+	"GMH:s/n627": {
+		"addr": 9,
+		"str_addr": "COM9",
+		"test": "T",
+		"demo": true,
+		"role": null,
+		"T_correction": {
+			"value": 0.01,
+			"uncert": 8.6e-3,
+			"dof": "18.1",
+			"label": "GMH627T_cor",
+			"Reference_comment": "Temperature/2018/723. Units are deg C"
+		}
+	},
+	"G6530": {
+		"addr": 4,
+		"str_addr": "GPIB0::4::INSTR",
+		"test": "",
+		"init_str": ["", "", ""],
+		"oper_str": "",
+		"stby_str": "",
+		"demo": true,
+		"role": null
+	},
+	"G6564": {
+		"addr": 5,
+		"str_addr": "GPIB0::5::INSTR",
+		"test": null,
+		"demo": true,
+		"role": null
+	}
+}

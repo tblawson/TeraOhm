@@ -41,9 +41,9 @@ class GMHSensor:
         """
         Initiate a GMH sensor object.
 
-        :param port:
-            COM port number to which GMH device is attached (via 3100N cable)
-        :param demo:
+        :param port (int):
+             COM port number to which GMH device is attached (via 3100N cable)
+        :param demo (bool):
             Describes if this object is NOT capable of operating as a real GMH sensor (default is True) -
             False - the COM port connecting to a real device is open AND that device is turned on and present,
             True - the device is a combination of one or more of:

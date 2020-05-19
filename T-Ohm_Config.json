@@ -1,0 +1,15 @@
+{
+	"ref_chan": 0,
+	"0" : {
+		"resistor": "C 1G", 
+		"gmh_probe": "GMH s/n627"
+	},
+	"1": {
+		"resistor": "unknown1 1T", 
+		"gmh_probe": "GMH s/n628"
+	},
+	"2": {
+		"resistor": "unknown2 1T", 
+		"gmh_probe": "GMH s/n1I"
+	}
+}

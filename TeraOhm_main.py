@@ -7,54 +7,60 @@ T.Lawson
 
 
 import time
-import devices as dev
+import config
+
 
 SAMPLE_TIME = 210  # time in s
-print(dev.RM.list_resources())
 
-G6530 = dev.Instrument("GPIB0::4::INSTR", can_talk=True)
+"""
+Create a configuration from info stored in config, instruments & resistor files:
+"""
+setup = config.Configuration()
 
-G6564 = dev.Instrument("GPIB0::5::INSTR")
+print('All possible channels:\n{}'.format(setup.chan_ids))
+print('All available visa resources:\n{}'.format(setup.get_res_list()))
 
-G6530.test()
+setup.meter.test()
 time.sleep(1)
-G6564.test()
+setup.scanner.test()
 time.sleep(1)
 
-G6530.send_cmd('SYST:VERB')
-G6530.send_cmd('MEAS:UNITS OHMS')
-G6564.send_cmd('A01')
+setup.meter.send_cmd('SYST:VERB')
+setup.meter.send_cmd('MEAS:UNITS OHMS')
 
-print('Trace mode:', G6530.send_cmd('TRAC:MODE?'))
-print('Calibration threshold V:', G6530.send_cmd('CAL:THR:VOLT?'))
+# set scanner to reference channel:
+setup.scanner.send_cmd('A' + setup.ref_chan_id)
 
-print('Integrator threshold:', G6530.send_cmd('SENS:INT:THRESH?'))
-print('Output V:', G6530.send_cmd('SENS:OUT:VOLT?'))
-print('Polarity mode:', G6530.send_cmd('SENS:POL?'))
-print('Range mode:', G6530.send_cmd('SENS:RANG?'))
+print('Trace mode:', setup.meter.send_cmd('TRAC:MODE?'))
+print('Calibration threshold V:', setup.meter.send_cmd('CAL:THR:VOLT?'))
 
-G6530.send_cmd('MEAS ON')
+print('Integrator threshold:', setup.meter.send_cmd('SENS:INT:THRESH?'))
+print('Output V:', setup.meter.send_cmd('SENS:OUT:VOLT?'))
+print('Polarity mode:', setup.meter.send_cmd('SENS:POL?'))
+print('Range mode:', setup.meter.send_cmd('SENS:RANG?'))
+
+setup.meter.send_cmd('MEAS ON')
 print('\nMEAS ON____________________')
 
 t_start = time.time()
 run_time = 0
 
 while run_time <= SAMPLE_TIME:
-    G6530.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements
+    setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements
     time.sleep(15)
     run_time = time.time() - t_start
     countdown = SAMPLE_TIME - run_time
     print('{:0.1f} s to go...'.format(countdown))
-    print('Output V:', G6530.send_cmd('SENS:OUT:VOLT?'))
+    print('Output V:', setup.meter.send_cmd('SENS:OUT:VOLT?'))
 
-G6530.send_cmd('MEAS OFF')
-print(G6530.send_cmd('MEAS?'))
+setup.meter.send_cmd('MEAS OFF')
+print(setup.meter.send_cmd('MEAS?'))
 print('___________________MEAS OFF')
-print('Single reading:\n', G6530.send_cmd('READ:RES?'))
-print('Trace buffer:\n', G6530.send_cmd('TRAC:DATA?'))
-print('Summary buffer:\n', G6530.send_cmd('TRAC:TREN:DATA?'))
-print('Summary stats:\n', G6530.send_cmd('TRAC:TREN:SUM?'))
+print('Single reading:\n', setup.meter.send_cmd('READ:RES?'))
+print('Trace buffer:\n', setup.meter.send_cmd('TRAC:DATA?'))
+print('Summary buffer:\n', setup.meter.send_cmd('TRAC:TREN:DATA?'))
+print('Summary stats:\n', setup.meter.send_cmd('TRAC:TREN:SUM?'))
 
-G6530.close()
-G6564.close()
-dev.RM.close()
+setup.meter.close()
+setup.scanner.close()
+config.dev.RM.close()
