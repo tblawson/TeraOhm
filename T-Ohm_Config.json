@@ -1,15 +1,31 @@
 {
+	"max_volts": 1000
 	"ref_chan": 0,
 	"0" : {
 		"resistor": "C 1G", 
 		"gmh_probe": "GMH s/n627"
+		"n_samples": 300,
+		"n_settled": 100,
+		"v_test": 10,
+		"cap": 2700,
+		"v_thresh": 10
 	},
 	"1": {
 		"resistor": "unknown1 1T", 
-		"gmh_probe": "GMH s/n628"
+		"gmh_probe": "GMH s/n628",
+		"n_samples": 300'
+		"n_settled": 100,
+		"v_test": 10,
+		"cap": 2700,
+		"v_thresh": 10
 	},
 	"2": {
 		"resistor": "unknown2 1T", 
-		"gmh_probe": "GMH s/n1I"
+		"gmh_probe": "GMH s/n1I",
+		"n_samples": 300',
+		"n_settled": 100,
+		"v_test": 10,
+		"cap": 2700,
+		"v_thresh": 10
 	}
 }

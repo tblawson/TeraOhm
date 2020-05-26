@@ -143,7 +143,7 @@ class Instrument(Device):
         return 1
 
     def send_cmd(self, s):
-        demo_reply = 'Instrument in demo mode (addr {})'.format(self.addr)
+        demo_reply = 'Demo Instrument reply (addr {})'.format(self.addr)
         default_reply = ''
         if self.demo or not self.is_open:
             return demo_reply
@@ -202,6 +202,7 @@ class Instrument(Device):
         """
         Default test-method for model 6530 teraohmmeter.
         """
+        print('Attempting to get meter ID...')
         try:
             return self.instr.query('*IDN?')
         except AttributeError as msg:  # self.instr is None so it has no query() method.

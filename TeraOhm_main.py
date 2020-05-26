@@ -10,7 +10,7 @@ import time
 import config
 
 
-SAMPLE_TIME = 210  # time in s
+SAMPLE_TIME = 10  # 210time in s
 
 """
 Create a configuration from info stored in config, instruments & resistor files:
@@ -47,7 +47,7 @@ run_time = 0
 
 while run_time <= SAMPLE_TIME:
     setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements
-    time.sleep(15)
+    time.sleep(15)  # Above cmd needs to be given at least every 20 s.
     run_time = time.time() - t_start
     countdown = SAMPLE_TIME - run_time
     print('{:0.1f} s to go...'.format(countdown))
