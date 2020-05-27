@@ -20,16 +20,49 @@ setup = config.Configuration()
 print('All possible channels:\n{}'.format(setup.chan_ids))
 print('All available visa resources:\n{}'.format(setup.get_res_list()))
 
-setup.meter.test()
+# Ensure meter and scanner work:
+setup.meter.test()  # Return id-string.
 time.sleep(1)
-setup.scanner.test()
+setup.scanner.test()  # Select each channel in sequence.
 time.sleep(1)
 
+# Initialise meter
 setup.meter.send_cmd('SYST:VERB')
-setup.meter.send_cmd('MEAS:UNITS OHMS')
+setup.meter.send_cmd('MEAS:UNIT OHMS')
+setup.meter.send_cmd('TRAC:MODE CLEAR')  # Clear old measurements.
+setup.meter.send_cmd('TRAC:MODE KEEP')  # Keep new measurements.
+setup.meter.send_cmd('TRIG:SOUR CONT')  # Continuous trigger mode.
+setup.meter.send_cmd('SENS:RANG AUTO')  # Auto range mode.
+setup.meter.send_cmd('SENS:POL AUTO')  # Auto-switch polarity during measurements.
+
+# Loop over channels in config file:
+for chan in range(setup['n_chans']):  # 0, 1, ...
+    chan_id = setup.chan_ids[chan]  # 'A01', 'A02', ...
+    setup.scanner.send_cmd(chan_id)
+
+"""
+Use default measurement parameters (AUTO):
+
+OR set manually, using parameters in setup for this channel:
+    "MEAS:TERA:COUN 300" # Total no of samples
+    "MEAS:STAB:SIZE 100" # No of samples to use for mean & stdev
+    "SENS:OUT:VOLT 10" # Test voltage
+    "SENS:MAX:VOLT 10"  # Max output voltage 
+    "SENS:CAP 2700"  # Integrating cap (pF)
+    "SENS:INT 10" # Integrator thresold (V)
+    "TRIG:DEL 5" # Delay (s) between each measurement
+    "TRIG:SOAK 60"  # Additional delay between reversals/applying test-V
+
+    Can check integration time of last measurement with:
+    "SENS:INT:TIME?"  # should be {0.5 < t < 60} s (default: 5.4 s)
+
+"""
+
+
+
 
 # set scanner to reference channel:
-setup.scanner.send_cmd('A' + setup.ref_chan_id)
+# setup.scanner.send_cmd('A' + setup.ref_chan_id)
 
 print('Trace mode:', setup.meter.send_cmd('TRAC:MODE?'))
 print('Calibration threshold V:', setup.meter.send_cmd('CAL:THR:VOLT?'))

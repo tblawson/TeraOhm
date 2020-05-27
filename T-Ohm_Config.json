@@ -1,6 +1,7 @@
 {
 	"max_volts": 1000
 	"ref_chan": 0,
+	"n_chans": 3
 	"0" : {
 		"resistor": "C 1G", 
 		"gmh_probe": "GMH s/n627"

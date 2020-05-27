@@ -31,9 +31,9 @@ class Configuration:
     """
     def __init__(self):
         self.chan_ids = []
-        # Build list of channel labels: '01', '02', ...'15', '16':
+        # Build list of channel labels: 'A01', 'A02', ...'A15', 'A16':
         for c in range(dev.MAX_CHANNELS):
-            self.chan_ids.append(str(c + 1).zfill(2))
+            self.chan_ids.append('A' + str(c + 1).zfill(2))
 
         #  Load default config, instrument & resistor info:
         self.config = self.load_file(CONFIG_FILENAME)  # Resistor & T-sensor assignments for each channel.
