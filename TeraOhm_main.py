@@ -10,7 +10,7 @@ import time
 import config
 
 
-SAMPLE_TIME = 10  # 210time in s
+RUN_TIME = 205  # 210time in s
 
 """
 Create a configuration from info stored in config, instruments & resistor files:
@@ -23,20 +23,27 @@ print('All available visa resources:\n{}'.format(setup.get_res_list()))
 # Ensure meter and scanner work:
 setup.meter.test()  # Return id-string.
 time.sleep(1)
-setup.scanner.test()  # Select each channel in sequence.
+# setup.scanner.test()  # Select each channel in sequence.
 time.sleep(1)
 
 # Initialise meter
 setup.meter.send_cmd('SYST:VERB')
 setup.meter.send_cmd('MEAS:UNIT OHMS')
-setup.meter.send_cmd('TRAC:MODE CLEAR')  # Clear old measurements.
-setup.meter.send_cmd('TRAC:MODE KEEP')  # Keep new measurements.
+setup.meter.send_cmd('TRAC:MODE CLEAR')  # Overwrite previous measurements.
+# setup.meter.send_cmd('TRAC:MODE KEEP')  # Append to previous measurements.
+
+print('System date:', setup.meter.send_cmd('SYST:DATE?'))
+print('System time:', setup.meter.send_cmd('SYST:TIME?'))
+
+print('Trace mode:', setup.meter.send_cmd('TRAC:MODE?'))
 setup.meter.send_cmd('TRIG:SOUR CONT')  # Continuous trigger mode.
 setup.meter.send_cmd('SENS:RANG AUTO')  # Auto range mode.
+print('Range mode:', setup.meter.send_cmd('SENS:RANG?'))
 setup.meter.send_cmd('SENS:POL AUTO')  # Auto-switch polarity during measurements.
+print('Polarity mode:', setup.meter.send_cmd('SENS:POL?'))
 
 # Loop over channels in config file:
-for chan in range(setup['n_chans']):  # 0, 1, ...
+for chan in range(setup.config['n_chans']):  # 0, 1, ...
     chan_id = setup.chan_ids[chan]  # 'A01', 'A02', ...
     setup.scanner.send_cmd(chan_id)
 
@@ -44,12 +51,12 @@ for chan in range(setup['n_chans']):  # 0, 1, ...
 Use default measurement parameters (AUTO):
 
 OR set manually, using parameters in setup for this channel:
-    "MEAS:TERA:COUN 300" # Total no of samples
-    "MEAS:STAB:SIZE 100" # No of samples to use for mean & stdev
+    "MEAS:TERA:COUN 300" # Total no of samples?
+    "MEAS:STAB:SIZE 100" # No of samples to use for mean & stdev?
     "SENS:OUT:VOLT 10" # Test voltage
     "SENS:MAX:VOLT 10"  # Max output voltage 
     "SENS:CAP 2700"  # Integrating cap (pF)
-    "SENS:INT 10" # Integrator thresold (V)
+    "SENS:INT:THR 10" # Integrator thresold (V)
     "TRIG:DEL 5" # Delay (s) between each measurement
     "TRIG:SOAK 60"  # Additional delay between reversals/applying test-V
 
@@ -58,19 +65,13 @@ OR set manually, using parameters in setup for this channel:
 
 """
 
-
-
-
 # set scanner to reference channel:
 # setup.scanner.send_cmd('A' + setup.ref_chan_id)
 
-print('Trace mode:', setup.meter.send_cmd('TRAC:MODE?'))
-print('Calibration threshold V:', setup.meter.send_cmd('CAL:THR:VOLT?'))
 
-print('Integrator threshold:', setup.meter.send_cmd('SENS:INT:THRESH?'))
+# print('Calibration threshold V:', setup.meter.send_cmd('CAL:THR:VOLT?'))
+print('Integrator threshold:', setup.meter.send_cmd('SENS:INT:THR?'))
 print('Output V:', setup.meter.send_cmd('SENS:OUT:VOLT?'))
-print('Polarity mode:', setup.meter.send_cmd('SENS:POL?'))
-print('Range mode:', setup.meter.send_cmd('SENS:RANG?'))
 
 setup.meter.send_cmd('MEAS ON')
 print('\nMEAS ON____________________')
@@ -78,21 +79,33 @@ print('\nMEAS ON____________________')
 t_start = time.time()
 run_time = 0
 
-while run_time <= SAMPLE_TIME:
+while run_time <= RUN_TIME:
     setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements
     time.sleep(15)  # Above cmd needs to be given at least every 20 s.
     run_time = time.time() - t_start
-    countdown = SAMPLE_TIME - run_time
+    countdown = RUN_TIME - run_time
     print('{:0.1f} s to go...'.format(countdown))
     print('Output V:', setup.meter.send_cmd('SENS:OUT:VOLT?'))
+    # print('MEAS:STAB:SIZE?:', setup.meter.send_cmd('MEAS:STAB:SIZE?'))
+    # print('MEAS:TERA:COUN?:', setup.meter.send_cmd('MEAS:TERA:COUN?'))
+    # print('MEAS:REV:COUN?:', setup.meter.send_cmd('MEAS:REV:COUN?'))
+    # print('MEAS:WIND?:', setup.meter.send_cmd('MEAS:WIND?'))
 
 setup.meter.send_cmd('MEAS OFF')
 print(setup.meter.send_cmd('MEAS?'))
 print('___________________MEAS OFF')
-print('Single reading:\n', setup.meter.send_cmd('READ:RES?'))
+
+print('Single reading:', setup.meter.send_cmd('READ:RES?'))
+# print('Trace elements:', setup.meter.send_cmd('TRAC:ELEM?'))
 print('Trace buffer:\n', setup.meter.send_cmd('TRAC:DATA?'))
 print('Summary buffer:\n', setup.meter.send_cmd('TRAC:TREN:DATA?'))
 print('Summary stats:\n', setup.meter.send_cmd('TRAC:TREN:SUM?'))
+
+print('Last integration time (s):', setup.meter.send_cmd('SENS:INT:TIME?'))
+
+# print('TRIG:DEL?:', setup.meter.send_cmd('TRIG:DEL?'))
+# print('TRIG:SOAK?:', setup.meter.send_cmd('TRIG:SOAK?'))
+
 
 setup.meter.close()
 setup.scanner.close()
