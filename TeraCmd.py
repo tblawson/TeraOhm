@@ -16,3 +16,5 @@ while True:
     print(meter.send_cmd(cmd))
     if 'q' in cmd:
         break
+meter.close()
+dev.RM.close()
