@@ -35,11 +35,11 @@ Initialise meter:
 """
 setup.meter.send_cmd('SYST:VERB')
 setup.meter.send_cmd('MEAS:UNIT OHMS')
-setup.meter.send_cmd('TRAC:MODE CLEAR')  # Overwrite previous measurements.
+setup.meter.send_cmd('TRAC:MODE KEEP')  # Append previous measurements.
 setup.meter.send_cmd('TRIG:SOUR CONT')  # Continuous trigger mode.
 setup.meter.send_cmd('SENS:RANG AUTO')  # Auto range mode.
 setup.meter.send_cmd('SENS:POL AUTO')  # Auto-switch polarity during measurements.
-# setup.meter.send_cmd('TRAC:MODE KEEP')  # Append to previous measurements.
+# setup.meter.send_cmd('TRAC:MODE CLEAR')  # Overwrite to previous measurements.
 
 """
 Use default measurement parameters (AUTO):
