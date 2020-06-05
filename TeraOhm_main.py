@@ -67,6 +67,7 @@ print('System time:', setup.meter.send_cmd('SYST:TIME?'))
 """
 Loop over scanner channels:
 """
+results = {}
 for chan in range(setup.config['n_chans']):  # 0, 1, ...
     chan_id = setup.chan_ids[chan]  # 'A01', 'A02', ...
     setup.scanner.send_cmd(chan_id)
@@ -97,12 +98,38 @@ for chan in range(setup.config['n_chans']):  # 0, 1, ...
     print('Summary stats:\n', summary_stats_dump)
     print('Last integration time (s):', setup.meter.send_cmd('SENS:INT:TIME?'))
 
-# print('Single reading:', setup.meter.send_cmd('READ:RES?'))
-# print('Trace elements:', setup.meter.send_cmd('TRAC:ELEM?'))
-# print('Summary buffer:\n', setup.meter.send_cmd('TRAC:TREN:DATA?'))
-# print('TRIG:DEL?:', setup.meter.send_cmd('TRIG:DEL?'))
-# print('TRIG:SOAK?:', setup.meter.send_cmd('TRIG:SOAK?'))
+    """
+    Extract data from trace buffer:
+    """
+    times = []
+    R_vals = []
+    mystery_nums = []
+    lines = trace_buffer_dump.split('\n')
+    for line in lines:
+        if len(line) < 3:
+            break  # Last line is blank
+        words = line.split(',')
+        R_vals.append(words[0])
+        times.append(words[1])
+        mystery_nums.append(words[2])
 
+    """
+    Get number of samples from summary statistics:
+    """
+    lines = summary_stats_dump.split('\n')
+    last_line = lines[-2]  # Last line is blank, so we want 2nd-to-last.
+    n_samples = int(last_line.split(',')[-2])
+
+    result = {'R_name': R_name,
+              'times': times,
+              'R_vals': R_vals}
+    results.update({chan_id: result})
+
+"""
+Write out measurement data
+and tidy up:
+"""
+setup.save_data(results)
 setup.meter.close()
 setup.scanner.close()
 config.dev.RM.close()

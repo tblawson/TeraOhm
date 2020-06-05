@@ -12,6 +12,7 @@ working_dir = os.path.dirname(os.path.realpath(__file__))
 CONFIG_FILENAME = os.path.join(working_dir, 'T-Ohm_Config.json')  # os.getcwd()
 INSTR_FILENAME = os.path.join(working_dir, 'T-Ohm_Instruments.json')
 RES_FILENAME = os.path.join(working_dir, 'T-Ohm_Resistors.json')
+OUT_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurement.json')
 
 
 class Configuration:
@@ -61,6 +62,20 @@ class Configuration:
         except (FileNotFoundError, IOError) as e:
             print("Can't open file {}: {}".format(filename, e))
             return {}  # An empty dict
+
+    @staticmethod
+    def save_data(data, filename=OUT_FILENAME):
+        """
+        Write raw measurement data.
+        """
+        json_str = json.dumps(data, indent=4)
+        try:
+            with open(filename, 'w') as fp:
+                fp.write(json_str)
+            return 1
+        except IOError as e:
+            print("Can't open file {}: {}".format(filename, e))
+            return -1
 
     @staticmethod
     def strip_chars(oldstr, charlist=''):

@@ -19,10 +19,14 @@ while True:
         break
     if cmd == 'TRAC:TREN:SUM?':
         lines = reply.split('\n')
-        print(lines)
         last_line = lines[-2]
-        print(last_line)
         n_samples = int(last_line.split(',')[-2])
         print('n_samples = {}'.format(n_samples))
+    if cmd == 'TRAC:DATA?':
+        lines = reply.split('\n')
+        for line in lines:
+            words = line.split(',')
+            print('\t{}: R={}\t?={}'.format(words[1], words[0], words[2]))
+
 meter.close()
 dev.RM.close()
