@@ -67,7 +67,7 @@ print('System time:', setup.meter.send_cmd('SYST:TIME?'))
 """
 Loop over scanner channels:
 """
-results = {}
+meas_results = {}
 for chan in range(setup.config['n_chans']):  # 0, 1, ...
     chan_id = setup.chan_ids[chan]  # 'A01', 'A02', ...
     setup.scanner.send_cmd(chan_id)
@@ -75,16 +75,26 @@ for chan in range(setup.config['n_chans']):  # 0, 1, ...
     print('Resistor: {} on scanner chan {}'.format(R_name, chan_id))
     time.sleep(1)
 
+    """
+    Set up GMH probe object for this scanner channel:
+    """
+    # T_role = R_name + '_' + chan_id
+    T_descr = setup.config[chan]['gmh_probe']
+    T_port = setup.instr_data[T_descr]
+    T_probe = config.dev.GMHSensor(T_descr, T_port)
+
     setup.meter.send_cmd('MEAS ON')
     print('\nMEAS ON____________________')
 
     test_reading = setup.meter.send_cmd('READ:RES?')
 
+    temps = []
     t_start = time.time()
     run_time = 0
     while run_time <= TOTAL_RUNTIME_PER_CHAN:
         time.sleep(15)  # Below cmd needs to be given every <= 20 s.
         setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements
+        temps.append(T_probe.measure('T'))
         run_time = time.time() - t_start
         countdown = TOTAL_RUNTIME_PER_CHAN - run_time
         print('{:0.1f} s to go...'.format(countdown))
@@ -92,6 +102,8 @@ for chan in range(setup.config['n_chans']):  # 0, 1, ...
     print('___________________MEAS OFF')
 
     summary_stats_dump = setup.meter.send_cmd('TRAC:TREN:SUM?')
+    # n_samples = int(summary_stats_dump.split()[-1])
+    # print(n_samples)
     trace_buffer_dump = setup.meter.send_cmd('TRAC:DATA?')
 
     print('Trace buffer:\n', trace_buffer_dump)
@@ -120,16 +132,31 @@ for chan in range(setup.config['n_chans']):  # 0, 1, ...
     last_line = lines[-2]  # Last line is blank, so we want 2nd-to-last.
     n_samples = int(last_line.split(',')[-2])
 
-    result = {'R_name': R_name,
-              'times': times,
-              'R_vals': R_vals}
-    results.update({chan_id: result})
+    meas_result = {'R_name': R_name,
+                   'times': times,
+                   'R_vals': R_vals,
+                   'temperatures': temps}
+    meas_results.update({chan_id: meas_result})
 
 """
-Write out measurement data
-and tidy up:
+Write out raw measurement data - 
+Note that the number of temperature measurements
+will NOT match the number of resistance measurements...
 """
-setup.save_data(results)
+setup.save_data(meas_results)
+
+"""
+... and tidy up:
+"""
 setup.meter.close()
 setup.scanner.close()
 config.dev.RM.close()
+
+"""
+Analyse raw data...
+
+The analysis should be entirely separate
+from the initial data acquisition.
+
+Perhaps this next section could be a separate script (?)
+"""

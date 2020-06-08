@@ -21,9 +21,9 @@ class GMHSensor(GMH.GMHSensor):
         * A 'role' - this could be a scanner channel number,
         * A 'port' - the sensor's COM port number.
     """
-    def __init__(self, descr, role, port):
+    def __init__(self, descr, port):
         self.descr = descr
-        self.role = role
+        # self.role = role
         self.port = port
         # self.port = int(INSTR_DATA[self.descr]['addr'])
         super().__init__(self.port)
