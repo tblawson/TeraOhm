@@ -12,7 +12,7 @@ working_dir = os.path.dirname(os.path.realpath(__file__))
 CONFIG_FILENAME = os.path.join(working_dir, 'T-Ohm_Config.json')  # os.getcwd()
 INSTR_FILENAME = os.path.join(working_dir, 'T-Ohm_Instruments.json')
 RES_FILENAME = os.path.join(working_dir, 'T-Ohm_Resistors.json')
-OUT_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurement.json')
+OUT_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurements.json')
 
 
 class Configuration:
