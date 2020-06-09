@@ -8,7 +8,8 @@ import os
 import json
 import devices as dev
 
-working_dir = os.path.dirname(os.path.realpath(__file__))
+# working_dir = os.path.dirname(os.path.realpath(__file__))
+working_dir = input('Working directory? ')
 CONFIG_FILENAME = os.path.join(working_dir, 'T-Ohm_Config.json')  # os.getcwd()
 INSTR_FILENAME = os.path.join(working_dir, 'T-Ohm_Instruments.json')
 RES_FILENAME = os.path.join(working_dir, 'T-Ohm_Resistors.json')
