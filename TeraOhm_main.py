@@ -118,9 +118,9 @@ for chan in range(setup.config['n_chans']):  # 0, 1, ...
     mystery_nums = []
     lines = trace_buffer_dump.split('\n')
     for line in lines:
-        if len(line) < 3:
-            break  # Last line is blank
         words = line.split(',')
+        if len(words) < 3:
+            break  # Last line is blank
         R_vals.append(words[0])
         times.append(words[1])
         mystery_nums.append(words[2])
