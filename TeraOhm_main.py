@@ -10,7 +10,7 @@ import time
 import config
 
 
-TOTAL_RUNTIME_PER_CHAN = 205  # 210time in s
+total_runtime_per_ch = 205  # 210time in s
 
 
 """
@@ -67,11 +67,12 @@ print('System time:', setup.meter.send_cmd('SYST:TIME?'))
 """
 Loop over scanner channels:
 """
+total_runtime_per_ch = int(input('Run-time per channel (s)? '))
 meas_results = {}
-for chan in range(setup.config['n_chans']):  # 0, 1, ...
+for chan in range(setup.init['n_chans']):  # 0, 1, ...
     chan_id = setup.chan_ids[chan]  # 'A01', 'A02', ...
     setup.scanner.send_cmd(chan_id)
-    R_name = setup.config[str(chan)]['resistor']
+    R_name = setup.init[str(chan)]['resistor']  # json keys are always str-type.
     print('Resistor: {} on scanner chan {}'.format(R_name, chan_id))
     time.sleep(1)
 
@@ -79,24 +80,25 @@ for chan in range(setup.config['n_chans']):  # 0, 1, ...
     Set up GMH probe object for this scanner channel:
     """
     # T_role = R_name + '_' + chan_id
-    T_descr = setup.config[chan]['gmh_probe']
-    T_port = setup.instr_data[T_descr]
+    T_descr = setup.init[str(chan)]['gmh_probe']
+    T_port = setup.instr_data[T_descr]['addr']
     T_probe = config.dev.GMHSensor(T_descr, T_port)
 
     setup.meter.send_cmd('MEAS ON')
     print('\nMEAS ON____________________')
 
-    test_reading = setup.meter.send_cmd('READ:RES?')
+    # test_reading = setup.meter.send_cmd('READ:RES?')
+    setup.meter.send_cmd('TRACe:CLEar')  # Clear previous data.
 
     temps = []
     t_start = time.time()
     run_time = 0
-    while run_time <= TOTAL_RUNTIME_PER_CHAN:
-        time.sleep(15)  # Below cmd needs to be given every <= 20 s.
-        setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements
+    while run_time <= total_runtime_per_ch:
+        time.sleep(15)  # Below cmd needs to be given every <= 20 s to keep V_test on.
+        setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements.
         temps.append(T_probe.measure('T'))
         run_time = time.time() - t_start
-        countdown = TOTAL_RUNTIME_PER_CHAN - run_time
+        countdown = total_runtime_per_ch - run_time
         print('{:0.1f} s to go...'.format(countdown))
     setup.meter.send_cmd('MEAS OFF')
     print('___________________MEAS OFF')
@@ -160,3 +162,5 @@ from the initial data acquisition.
 
 Perhaps this next section could be a separate script (?)
 """
+
+
