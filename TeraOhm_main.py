@@ -8,6 +8,7 @@ T.Lawson
 
 import time
 import config
+import gtc
 
 
 total_runtime_per_ch = 205  # 210time in s
@@ -96,7 +97,7 @@ for chan in range(setup.init['n_chans']):  # 0, 1, ...
     while run_time <= total_runtime_per_ch:
         time.sleep(15)  # Below cmd needs to be given every <= 20 s to keep V_test on.
         setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements.
-        temps.append(T_probe.measure('T'))
+        temps.append(T_probe.measure('T')[0])  # Only need value, not unit-string
         run_time = time.time() - t_start
         countdown = total_runtime_per_ch - run_time
         print('{:0.1f} s to go...'.format(countdown))
@@ -161,6 +162,12 @@ The analysis should be entirely separate
 from the initial data acquisition.
 
 Perhaps this next section could be a separate script (?)
+_________________________
+Import the raw measurements file to a dict:
+T-Ohm_Measurements.json --> meas_results
+(just using meas_results for now).
 """
-
-
+for chan in meas_results:
+    if chan ==
+    R_av = gtc.ta.estimate(chan['R_vals'])
+    T_av = gtc.ta.estimate(chan['temperatures'])
