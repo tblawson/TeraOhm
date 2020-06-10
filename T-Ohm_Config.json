@@ -4,7 +4,7 @@
 	"n_chans": 3,
 	"0" : {
 		"resistor": "H100M 10M", 
-		"gmh_probe": "GMH s/n627",
+		"gmh_probe": "GMH:s/n627",
 		"n_samples": 300,
 		"n_settled": 100,
 		"v_test": 1,
@@ -13,7 +13,7 @@
 	},
 	"1": {
 		"resistor": "unknown1 1T", 
-		"gmh_probe": "GMH s/n628",
+		"gmh_probe": "GMH:s/n628",
 		"n_samples": 300,
 		"n_settled": 100,
 		"v_test": 10,
@@ -22,7 +22,7 @@
 	},
 	"2": {
 		"resistor": "unknown2 1T", 
-		"gmh_probe": "GMH s/n1I",
+		"gmh_probe": "GMH:s/n1I",
 		"n_samples": 300,
 		"n_settled": 100,
 		"v_test": 10,
