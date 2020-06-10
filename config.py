@@ -55,7 +55,16 @@ class Configuration:
         self.scanner = dev.Instrument(addr_6564)
 
         # Assign reference channel label:
-        self.ref_chan_id = self.chan_ids[self.config['ref_chan']]
+        self.ref_chan_id = self.chan_ids[self.init['ref_chan']]
+
+    def check_gmh_validity(self):
+        for ch in range(self.init['n_chans']):
+            probe = self.init[str(ch)]['gmh_probe']
+            if probe in self.instr_data:
+                print('{}: OK.'.format(probe))
+                continue
+            else:
+                print('Unknown temperature probe {} specified for channel {}!'.format(probe, ch))
 
     def load_file(self, filename):
         """
