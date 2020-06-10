@@ -42,6 +42,12 @@ class Configuration:
         self.instr_data = self.load_file(INSTR_FILENAME)
         self.res_data = self.load_file(RES_FILENAME)
 
+        """
+        Check that gmh probes listed in CONFIG_FILENAME
+        can be found in CONFIG_FILENAME:
+        """
+        self.check_gmh_validity()
+
         # Create meter and scanner instruments:
         addr_6530 = self.instr_data['G6530']['str_addr']  # "GPIB0::4::INSTR"
         addr_6564 = self.instr_data['G6564']['str_addr']  # "GPIB0::5::INSTR"
