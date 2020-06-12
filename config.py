@@ -4,6 +4,10 @@
 config.py
 Gathers together info for configuring experimental setup.
 """
+
+
+import datetime as dt
+import time
 import os
 import json
 import devices as dev
@@ -35,17 +39,13 @@ class Configuration:
         self.chan_ids = []
         # Build list of channel labels: 'A01', 'A02', ...'A15', 'A16':
         for c in range(dev.MAX_CHANNELS):
-            self.chan_ids.append('A' + str(c + 1).zfill(2))
+            self.chan_ids.append(channel_num_to_label(c))
 
         #  Load default config, instrument & resistor info:
-        self.config = self.load_file(CONFIG_FILENAME)  # Resistor & T-sensor assignments for each channel.
+        self.init = self.load_file(CONFIG_FILENAME)  # Resistor & T-sensor assignments for each channel.
         self.instr_data = self.load_file(INSTR_FILENAME)
         self.res_data = self.load_file(RES_FILENAME)
 
-        """
-        Check that gmh probes listed in CONFIG_FILENAME
-        can be found in CONFIG_FILENAME:
-        """
         self.check_gmh_validity()
 
         # Create meter and scanner instruments:
@@ -57,7 +57,27 @@ class Configuration:
         # Assign reference channel label:
         self.ref_chan_id = self.chan_ids[self.init['ref_chan']]
 
+    def channel_num_to_label(self, n):
+        """
+        Convert channel number to channel label.
+        :param n: (int) channel number (0,1,...,15).
+        :return: label (str) channel label ('A01', 'A02',...,'A16').
+        """
+        return 'A' + str(n + 1).zfill(2)
+
+    def channel_label_to_num(self, lab):
+        """
+        Convert channel label to channel number.
+        :param lab: (str) channel label ('A01', 'A02',...,'A16').
+        :return: n (int) channel number (0,1,...,15).
+        """
+        return int(lab.lstrip('A0')) - 1
+
     def check_gmh_validity(self):
+        """
+        Check that gmh probes listed in CONFIG_FILENAME
+        can be found in INSTRUMENTS_FILENAME:
+        """
         for ch in range(self.init['n_chans']):
             probe = self.init[str(ch)]['gmh_probe']
             if probe in self.instr_data:
@@ -65,6 +85,26 @@ class Configuration:
                 continue
             else:
                 print('Unknown temperature probe {} specified for channel {}!'.format(probe, ch))
+
+    def t_mean(self, t_str_list):
+        """
+        Accept a list of times (as strings), eg:
+        ['2020/06/10 14:42:59',...]
+        calculate mean time and return mean time (as string).
+        :param t_str_list: list of timestamps (as strings).
+        :return: single timestamp (as string).
+        """
+        throwaway = dt.datetime.strptime('20110101', '%Y%m%d')  # known bug fix
+        fmt = '%Y/%m/%d %H:%M:%S'
+        n = float(len(t_str_list))
+        t_av = 0.0
+        for s in t_str_list:
+            t_dt = dt.datetime.strptime(s, fmt)
+            t_tup = dt.datetime.timetuple(t_dt)
+            t_av += time.mktime(t_tup)
+        t_av /= n  # av. time as float (seconds from epoch)
+        t_av_fl = dt.datetime.fromtimestamp(t_av)
+        return t_av_fl.strftime(fmt)  # av. time as string
 
     def load_file(self, filename):
         """
