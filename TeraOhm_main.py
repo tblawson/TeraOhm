@@ -6,9 +6,9 @@ T.Lawson
 """
 
 
+import GTC
 import time
 import config
-import gtc
 
 
 total_runtime_per_ch = 205  # 210time in s
@@ -20,7 +20,7 @@ config, instruments & resistor files:
 """
 setup = config.Configuration()
 
-print('All possible channels:\n{}'.format(setup.chan_ids))
+print('All possible channel labels:\n{}'.format(setup.chan_ids))
 print('All available visa resources:\n{}'.format(setup.get_res_list()))
 
 """
@@ -70,11 +70,11 @@ Loop over scanner channels:
 """
 total_runtime_per_ch = int(input('Run-time per channel (s)? '))
 meas_results = {}
-for chan in range(setup.init['n_chans']):  # 0, 1, ...
-    chan_id = setup.chan_ids[chan]  # 'A01', 'A02', ...
-    setup.scanner.send_cmd(chan_id)
+for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
+    chan_lab = setup.chan_ids[chan]  # 'A01', 'A02', ...
+    setup.scanner.send_cmd(chan_lab)
     R_name = setup.init[str(chan)]['resistor']  # json keys are always str-type.
-    print('Resistor: {} on scanner chan {}'.format(R_name, chan_id))
+    print('Resistor: {} on scanner chan {}'.format(R_name, chan_lab))
     time.sleep(1)
 
     """
@@ -139,7 +139,7 @@ for chan in range(setup.init['n_chans']):  # 0, 1, ...
                    'times': times,
                    'R_vals': R_vals,
                    'temperatures': temps}
-    meas_results.update({chan_id: meas_result})
+    meas_results.update({chan_lab: meas_result})
 
 """
 Write out raw measurement data - 
@@ -167,7 +167,13 @@ Import the raw measurements file to a dict:
 T-Ohm_Measurements.json --> meas_results
 (just using meas_results for now).
 """
-for chan in meas_results:
-    if chan ==
-    R_av = gtc.ta.estimate(chan['R_vals'])
-    T_av = gtc.ta.estimate(chan['temperatures'])
+
+for chan_label in meas_results.keys():  # 'A01', 'A02'...
+    chan = setup.channel_label_to_num(chan_label)
+    R_meas_name = meas_results[chan_label]['R_name']
+    R_meas_av = GTC.ta.estimate(meas_results[chan_label]['R_vals'])
+    T_meas_av = GTC.ta.estimate(meas_results[chan_label]['temperatures'])
+    t_meas_av = setup.t_mean(meas_results[chan_label]['times'])
+
+    if chan == setup.init['ref_chan']:
+        pass
