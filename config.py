@@ -11,13 +11,15 @@ import time
 import os
 import json
 import devices as dev
+import GTC as gtc
 
 # working_dir = os.path.dirname(os.path.realpath(__file__))
 working_dir = input('Working directory? ')
 CONFIG_FILENAME = os.path.join(working_dir, 'T-Ohm_Config.json')  # os.getcwd()
 INSTR_FILENAME = os.path.join(working_dir, 'T-Ohm_Instruments.json')
 RES_FILENAME = os.path.join(working_dir, 'T-Ohm_Resistors.json')
-OUT_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurements.json')
+DATA_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurements.json')
+RESULTS_FILENAME = os.path.join(working_dir, 'T-Ohm_Results.json')
 
 
 class Configuration:
@@ -39,7 +41,7 @@ class Configuration:
         self.chan_ids = []
         # Build list of channel labels: 'A01', 'A02', ...'A15', 'A16':
         for c in range(dev.MAX_CHANNELS):
-            self.chan_ids.append(channel_num_to_label(c))
+            self.chan_ids.append(self.channel_num_to_label(c))
 
         #  Load default config, instrument & resistor info:
         self.init = self.load_file(CONFIG_FILENAME)  # Resistor & T-sensor assignments for each channel.
@@ -57,6 +59,7 @@ class Configuration:
         # Assign reference channel label:
         self.ref_chan_id = self.chan_ids[self.init['ref_chan']]
 
+    @staticmethod
     def channel_num_to_label(self, n):
         """
         Convert channel number to channel label.
@@ -65,6 +68,7 @@ class Configuration:
         """
         return 'A' + str(n + 1).zfill(2)
 
+    @staticmethod
     def channel_label_to_num(self, lab):
         """
         Convert channel label to channel number.
@@ -86,6 +90,7 @@ class Configuration:
             else:
                 print('Unknown temperature probe {} specified for channel {}!'.format(probe, ch))
 
+    @staticmethod
     def t_mean(self, t_str_list):
         """
         Accept a list of times (as strings), eg:
@@ -106,6 +111,52 @@ class Configuration:
         t_av_fl = dt.datetime.fromtimestamp(t_av)
         return t_av_fl.strftime(fmt)  # av. time as string
 
+    def dict_to_ureal(self, d):
+        """
+        Use items in dictionary d to construct a gtc uncertain number.
+        :param d: Dictionary having items: 'value', 'uncert', 'dof' and 'label'.
+        :return: gtc.ureal (or default ureal if d is missing items).
+        """
+        try:
+            val = d['value']
+            un = d['uncert']
+            df = d['dof']
+            lbl = d['label']
+        except KeyError as msg:
+            print('{} - missing info for ureal!'.format(msg))
+            return gtc.ureal(0, 0, label='default')
+        else:
+            return gtc.ureal(val, un, df, label=lbl)
+
+    def spec(self, res):
+        """
+        Return the meter specification.
+        :param res: (float) Nominal resistance (Ohms).
+        :return: (float) Specified uncertainty (Ohms).
+        """
+        if 9e4 < res <= 2e5:
+            return 4e-5*res
+        elif 2e5 < res <= 2e9:
+            return 8e-6*res
+        elif 2e9 < res <= 2e10:
+            return 1e-5*res
+        elif 2e10 < res <= 2e11:
+            return 1.5e-5*res
+        elif 2e11 < res <= 2e12:
+            return 5e-5
+        elif 2e12 < res <= 2e13:
+            return 1.2e-4*res
+        elif 2e13 < res <= 2e14:
+            return 2e-4*res
+        elif 2e14 < res <= 2e15:
+            return 8e-4*res
+        elif 2e15 < res <= 2e16:
+            return 2e-3*res
+        else:
+            print('Unknown meter specification!')
+            return 1
+
+
     def load_file(self, filename):
         """
         Attempt to load setup info from default file.
@@ -120,7 +171,7 @@ class Configuration:
             return {}  # An empty dict
 
     @staticmethod
-    def save_data(data, filename=OUT_FILENAME):
+    def save_data(data, filename=DATA_FILENAME):
         """
         Write raw measurement data.
         """
