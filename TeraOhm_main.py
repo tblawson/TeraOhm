@@ -231,7 +231,8 @@ for chan_label in meas_data.keys():  # 'A01', 'A02'...
     Rs_spec = gtc.ureal(0, setup.spec(Rs_meas['value'].x))
     spec = max(Rx_spec.u, Rs_spec.u)
 
-    Rx_calc['value'] = Rs*Rx_meas['value']/Rs_meas['value'] + spec
+    Rx_calc['value'] = setup.ureal_to_dict(Rs*Rx_meas['value']/Rs_meas['value'] + spec)
+
 
     analysed_results.update({chan_label: Rx_calc})
-    setup.save_data(analysed_results, filename=setup.RESULTS_FILENAME)
+    setup.save_data(analysed_results, filename=config.RESULTS_FILENAME)

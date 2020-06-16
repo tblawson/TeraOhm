@@ -111,7 +111,8 @@ class Configuration:
         t_av_fl = dt.datetime.fromtimestamp(t_av)
         return t_av_fl.strftime(fmt)  # av. time as string
 
-    def dict_to_ureal(self, d):
+    @staticmethod
+    def dict_to_ureal(d):
         """
         Use items in dictionary d to construct a gtc uncertain number.
         :param d: Dictionary having items: 'value', 'uncert', 'dof' and 'label'.
@@ -127,6 +128,10 @@ class Configuration:
             return gtc.ureal(0, 0, label='default')
         else:
             return gtc.ureal(val, un, df, label=lbl)
+
+    def ureal_to_dict(self, u):
+        return {'value': u.x, 'uncert': u.u, 'dof': u.df, 'label': u.label}
+
 
     def spec(self, res):
         """
