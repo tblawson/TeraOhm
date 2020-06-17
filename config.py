@@ -129,11 +129,12 @@ class Configuration:
         else:
             return gtc.ureal(val, un, df, label=lbl)
 
-    def ureal_to_dict(self, u):
+    @staticmethod
+    def ureal_to_dict(u):
         return {'value': u.x, 'uncert': u.u, 'dof': u.df, 'label': u.label}
 
-
-    def spec(self, res):
+    @staticmethod
+    def spec(res):
         """
         Return the meter specification.
         :param res: (float) Nominal resistance (Ohms).
@@ -160,7 +161,6 @@ class Configuration:
         else:
             print('Unknown meter specification!')
             return 1
-
 
     def load_file(self, filename):
         """

@@ -16,7 +16,7 @@ total_runtime_per_ch = 205  # 210time in s
 
 """
 Create a configuration from info stored in
-config, instruments & resistor files:
+init, instruments & resistor files:
 """
 setup = config.Configuration()
 
@@ -215,10 +215,10 @@ Calculate values of all non-reference resistors:
 analysed_results = {ref_chan_label: Rs_meas}
 
 for chan_label in meas_data.keys():  # 'A01', 'A02'...
+    chan = setup.channel_label_to_num(chan_label)
     if chan == ref_chan:
         continue
 
-    chan = setup.channel_label_to_num(chan_label)
     Rx_meas = {'chan_no': chan,
                'name': meas_data[chan_label]['R_name'],
                'value': gtc.ta.estimate(meas_data[chan_label]['R_vals']),
@@ -232,7 +232,6 @@ for chan_label in meas_data.keys():  # 'A01', 'A02'...
     spec = max(Rx_spec.u, Rs_spec.u)
 
     Rx_calc['value'] = setup.ureal_to_dict(Rs*Rx_meas['value']/Rs_meas['value'] + spec)
-
 
     analysed_results.update({chan_label: Rx_calc})
     setup.save_data(analysed_results, filename=config.RESULTS_FILENAME)
