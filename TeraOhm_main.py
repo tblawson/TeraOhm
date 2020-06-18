@@ -8,7 +8,7 @@ T.Lawson
 
 import time
 import config
-import gtc
+import GTC
 
 
 total_runtime_per_ch = 205  # 210time in s
@@ -158,25 +158,27 @@ setup.scanner.close()
 config.dev.RM.close()
 
 """
+_______________________________________________________
 Analyse raw data...
 
 The analysis should be entirely separate
 from the initial data acquisition.
 
 Perhaps this next section could be a separate script (?)
-_________________________
+_______________________________________________________
+"""
+
+"""
 Import the raw measurements file to a dict:
-(T-Ohm_Measurements.json --> meas_data)
 """
 meas_data = setup.load_file('T-Ohm_Measurements.json')
-
-
 
 """
 Gather reference resistor info:
 """
-ref_chan = setup.init['ref_chan']
+ref_chan = setup.init['ref_chan']  # NOTE: This info needed for both sections
 ref_chan_label = setup.channel_num_to_label(ref_chan)
+
 Rs_name = meas_data[ref_chan_label]['R_name']
 Rs_Vtest = meas_data[ref_chan_label]['V_test']
 

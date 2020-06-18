@@ -60,7 +60,7 @@ class Configuration:
         self.ref_chan_id = self.chan_ids[self.init['ref_chan']]
 
     @staticmethod
-    def channel_num_to_label(self, n):
+    def channel_num_to_label(n):
         """
         Convert channel number to channel label.
         :param n: (int) channel number (0,1,...,15).
@@ -69,7 +69,7 @@ class Configuration:
         return 'A' + str(n + 1).zfill(2)
 
     @staticmethod
-    def channel_label_to_num(self, lab):
+    def channel_label_to_num(lab):
         """
         Convert channel label to channel number.
         :param lab: (str) channel label ('A01', 'A02',...,'A16').
