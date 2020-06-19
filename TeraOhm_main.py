@@ -108,7 +108,7 @@ for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
     # n_samples = int(summary_stats_dump.split()[-1])
     # print(n_samples)
     trace_buffer_dump = setup.meter.send_cmd('TRAC:DATA?')
-    V_test = setup.meter.send_cmd('SENS:OUT:VOLT?')
+    V_test = float(setup.meter.send_cmd('SENS:OUT:VOLT?').split()[1])
 
     print('Trace buffer:\n', trace_buffer_dump)
     print('Summary stats:\n', summary_stats_dump)
@@ -125,7 +125,7 @@ for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
         words = line.split(',')
         if len(words) < 3:
             break  # Last line is blank
-        R_vals.append(words[0])
+        R_vals.append(float(words[0]))
         times.append(words[1])
         mystery_nums.append(words[2])
 
@@ -148,7 +148,7 @@ Write out raw measurement data -
 Note that the number of temperature measurements
 will NOT match the number of resistance measurements...
 """
-setup.save_data(meas_results)
+setup.save_file(meas_results)
 
 """
 ... and tidy up:
@@ -157,83 +157,3 @@ setup.meter.close()
 setup.scanner.close()
 config.dev.RM.close()
 
-"""
-_______________________________________________________
-Analyse raw data...
-
-The analysis should be entirely separate
-from the initial data acquisition.
-
-Perhaps this next section could be a separate script (?)
-_______________________________________________________
-"""
-
-"""
-Import the raw measurements file to a dict:
-"""
-meas_data = setup.load_file('T-Ohm_Measurements.json')
-
-"""
-Gather reference resistor info:
-"""
-ref_chan = setup.init['ref_chan']  # NOTE: This info needed for both sections
-ref_chan_label = setup.channel_num_to_label(ref_chan)
-
-Rs_name = meas_data[ref_chan_label]['R_name']
-Rs_Vtest = meas_data[ref_chan_label]['V_test']
-
-Rs_meas = {'chan_no': ref_chan,
-           'reference': True,
-           'name': Rs_name,
-           'value': GTC.ta.estimate(meas_data[ref_chan_label]['R_vals']),
-           'Temp': GTC.ta.estimate(meas_data[ref_chan_label]['temperatures']),
-           'V_test': Rs_Vtest,
-           'time': setup.t_mean(meas_data[ref_chan_label]['times'])
-           }
-
-# Choose reference value of Rs based on nearest test-voltage:
-V0_LV = setup.dict_to_ureal(setup.res_data[Rs_name]['VRef_LV'])
-V0_HV = setup.dict_to_ureal(setup.res_data[Rs_name]['VRef_HV'])
-if abs(V0_LV - Rs_Vtest) >= abs(V0_HV - Rs_Vtest):
-    V_suffix = '_HV'
-else:
-    V_suffix = '_LV'
-Rs_0 = setup.dict_to_ureal(setup.res_data[Rs_name]['R0' + V_suffix])
-Rs_T0 = setup.dict_to_ureal(setup.res_data[Rs_name]['TRef' + V_suffix])
-Rs_V0 = setup.dict_to_ureal(setup.res_data[Rs_name]['VRef' + V_suffix])
-
-
-# Calculate corrected true value of Rs:
-Rs_alpha = setup.dict_to_ureal(setup.res_data[Rs_name]['alpha'])
-Rs_beta = setup.dict_to_ureal(setup.res_data[Rs_name]['beta'])
-Rs_gamma = setup.dict_to_ureal(setup.res_data[Rs_name]['gamma'])
-Rs_dT = Rs_meas['Temp'] - Rs_T0
-Rs_dV = Rs_meas['V_test'] - Rs_V0
-Rs = Rs_0*(1 + Rs_alpha*Rs_dT + Rs_beta*Rs_dT*Rs_dT + Rs_gamma*Rs_dV)
-
-"""
-Calculate values of all non-reference resistors:
-"""
-analysed_results = {ref_chan_label: Rs_meas}
-
-for chan_label in meas_data.keys():  # 'A01', 'A02'...
-    chan = setup.channel_label_to_num(chan_label)
-    if chan == ref_chan:
-        continue
-
-    Rx_meas = {'chan_no': chan,
-               'name': meas_data[chan_label]['R_name'],
-               'value': GTC.ta.estimate(meas_data[chan_label]['R_vals']),
-               'Temp': GTC.ta.estimate(meas_data[chan_label]['temperatures']),
-               'V_test': meas_data[chan_label]['V_test'],
-               'time': setup.t_mean(meas_data[chan_label]['times'])}
-
-    Rx_calc = Rx_meas
-    Rx_spec = GTC.ureal(0, setup.spec(Rx_meas['value'].x))
-    Rs_spec = GTC.ureal(0, setup.spec(Rs_meas['value'].x))
-    spec = max(Rx_spec.u, Rs_spec.u)
-
-    Rx_calc['value'] = setup.ureal_to_dict(Rs*Rx_meas['value']/Rs_meas['value'] + spec)
-
-    analysed_results.update({chan_label: Rx_calc})
-    setup.save_data(analysed_results, filename=config.RESULTS_FILENAME)

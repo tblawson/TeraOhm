@@ -91,7 +91,7 @@ class Configuration:
                 print('Unknown temperature probe {} specified for channel {}!'.format(probe, ch))
 
     @staticmethod
-    def t_mean(self, t_str_list):
+    def t_mean(t_str_list):
         """
         Accept a list of times (as strings), eg:
         ['2020/06/10 14:42:59',...]
@@ -176,7 +176,7 @@ class Configuration:
             return {}  # An empty dict
 
     @staticmethod
-    def save_data(data, filename=DATA_FILENAME):
+    def save_file(data, filename=DATA_FILENAME):
         """
         Write raw measurement data.
         """
