@@ -185,8 +185,8 @@ Rs_Vtest = meas_data[ref_chan_label]['V_test']
 Rs_meas = {'chan_no': ref_chan,
            'reference': True,
            'name': Rs_name,
-           'value': gtc.ta.estimate(meas_data[ref_chan_label]['R_vals']),
-           'Temp': gtc.ta.estimate(meas_data[ref_chan_label]['temperatures']),
+           'value': GTC.ta.estimate(meas_data[ref_chan_label]['R_vals']),
+           'Temp': GTC.ta.estimate(meas_data[ref_chan_label]['temperatures']),
            'V_test': Rs_Vtest,
            'time': setup.t_mean(meas_data[ref_chan_label]['times'])
            }
@@ -223,14 +223,14 @@ for chan_label in meas_data.keys():  # 'A01', 'A02'...
 
     Rx_meas = {'chan_no': chan,
                'name': meas_data[chan_label]['R_name'],
-               'value': gtc.ta.estimate(meas_data[chan_label]['R_vals']),
-               'Temp': gtc.ta.estimate(meas_data[chan_label]['temperatures']),
+               'value': GTC.ta.estimate(meas_data[chan_label]['R_vals']),
+               'Temp': GTC.ta.estimate(meas_data[chan_label]['temperatures']),
                'V_test': meas_data[chan_label]['V_test'],
                'time': setup.t_mean(meas_data[chan_label]['times'])}
 
     Rx_calc = Rx_meas
-    Rx_spec = gtc.ureal(0, setup.spec(Rx_meas['value'].x))
-    Rs_spec = gtc.ureal(0, setup.spec(Rs_meas['value'].x))
+    Rx_spec = GTC.ureal(0, setup.spec(Rx_meas['value'].x))
+    Rs_spec = GTC.ureal(0, setup.spec(Rs_meas['value'].x))
     spec = max(Rx_spec.u, Rs_spec.u)
 
     Rx_calc['value'] = setup.ureal_to_dict(Rs*Rx_meas['value']/Rs_meas['value'] + spec)

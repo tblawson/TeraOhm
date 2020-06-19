@@ -82,10 +82,10 @@ class Configuration:
         Check that gmh probes listed in CONFIG_FILENAME
         can be found in INSTRUMENTS_FILENAME:
         """
-        for ch in range(self.init['n_chans']):
+        for ch in range(self.init['n_chans_in_use']):
             probe = self.init[str(ch)]['gmh_probe']
             if probe in self.instr_data:
-                print('{}: OK.'.format(probe))
+                print('{}: OK - Known instrument.'.format(probe))
                 continue
             else:
                 print('Unknown temperature probe {} specified for channel {}!'.format(probe, ch))
