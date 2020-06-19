@@ -3,7 +3,7 @@
 	"ref_chan": 0,
 	"n_chans_in_use": 3,
 	"0" : {
-		"resistor": "H100M 10M", 
+		"resistor": "H100M 10M",
 		"gmh_probe": "GMH:s/n627",
 		"n_samples": 300,
 		"n_settled": 100,
@@ -12,7 +12,7 @@
 		"v_thresh": 10
 	},
 	"1": {
-		"resistor": "unknown1 1T", 
+		"resistor": "unknown1 100M",
 		"gmh_probe": "GMH:s/n628",
 		"n_samples": 300,
 		"n_settled": 100,
@@ -21,7 +21,7 @@
 		"v_thresh": 10
 	},
 	"2": {
-		"resistor": "unknown2 1T", 
+		"resistor": "unknown2 100M",
 		"gmh_probe": "GMH:s/n367",
 		"n_samples": 300,
 		"n_settled": 100,

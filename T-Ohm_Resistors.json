@@ -64,5 +64,71 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 			},
 		"date": "15/02/2019"
+	},
+	"G003 100M": {
+		"R0_LV": {
+			"value": 100012441.5,
+			"uncert": 135,
+			"dof": 26,
+			"label": "C1G_R0_LV",
+			"Reference_comment": "THIS INFO IS WRONG!"
+		},
+		"R0_HV": {
+			"value": 1000124415,
+			"uncert": 13458,
+			"dof": 26,
+			"label": "G003_100M_R0_HV",
+			"Reference_comment": "THIS INFO IS WRONG!"
+		},
+		"TRef_LV": {
+			"value": 20,
+			"uncert": 0.0,
+			"dof": "inf",
+			"label": "G003_100M_TRef_LV",
+			"Reference_comment": "THIS INFO IS WRONG!"
+		},
+		"TRef_HV": {
+			"value": 20,
+			"uncert": 0.0,
+			"dof": "inf",
+			"label": "G003_100M_TRef_HV",
+			"Reference_comment": "THIS INFO IS WRONG!"
+		},
+		"VRef_LV": {
+			"value": 10,
+			"uncert": 0.0,
+			"dof": "inf",
+			"label": "G003_100M_VRef_LV",
+			"Reference_comment": "THIS INFO IS WRONG!"
+		},
+		"VRef_HV": {
+			"value": 500,
+			"uncert": 0.0,
+			"dof": "inf",
+			"label": "G003_100M_VRef_HV",
+			"Reference_comment": "THIS INFO IS WRONG!"
+		},
+		"alpha": {
+			"value": 1.13e-5,
+			"uncert": 1.4e-6,
+			"dof": 20,
+			"label": "G003_100M_alpha",
+			"Reference_comment": "THIS INFO IS WRONG!"
+		},
+		"beta": {
+			"value": 0,
+			"uncert": 0,
+			"dof": "inf",
+			"label": "G003_100M_beta",
+			"Reference_comment": "THIS INFO IS WRONG!"
+			},
+		"gamma": {
+			"value": 0,
+			"uncert": 0,
+			"dof": "inf",
+			"label": "G003_100M_gamma",
+			"Reference_comment": "THIS INFO IS WRONG!"
+			},
+		"date": "15/02/2019"
 	}
 }
