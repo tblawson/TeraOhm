@@ -5,7 +5,7 @@ config.py
 Gathers together info for configuring experimental setup.
 """
 
-
+import math
 import datetime as dt
 import time
 import os
@@ -34,10 +34,13 @@ class Configuration:
     calibration parameters. This information is stored in the dictionaries:
         * self.instr_data and
         * self.res_data.
+
     The info in self.instr_data is used to instantiate two Instrument objects,
     representing the tera-ohmmeter and scanner.
+
+    The info in self.res_data is used in the calculation of results.
     """
-    def __init__(self):
+    def __init__(self, mode):
         self.chan_ids = []
         # Build list of channel labels: 'A01', 'A02', ...'A15', 'A16':
         for c in range(dev.MAX_CHANNELS):
@@ -46,7 +49,8 @@ class Configuration:
         #  Load default config, instrument & resistor info:
         self.init = self.load_file(CONFIG_FILENAME)  # Resistor & T-sensor assignments for each channel.
         self.instr_data = self.load_file(INSTR_FILENAME)
-        self.res_data = self.load_file(RES_FILENAME)
+        if mode == 'calc':
+            self.res_data = self.load_file(RES_FILENAME)
 
         self.check_gmh_validity()
 
@@ -63,7 +67,7 @@ class Configuration:
     def channel_num_to_label(n):
         """
         Convert channel number to channel label.
-        :param n: (int) channel number (0,1,...,15).
+        :param n: (int) channel number (0, 1,..., 15).
         :return: label (str) channel label ('A01', 'A02',...,'A16').
         """
         return 'A' + str(n + 1).zfill(2)
@@ -73,7 +77,7 @@ class Configuration:
         """
         Convert channel label to channel number.
         :param lab: (str) channel label ('A01', 'A02',...,'A16').
-        :return: n (int) channel number (0,1,...,15).
+        :return: n (int) channel number (0, 1,..., 15).
         """
         return int(lab.lstrip('A0')) - 1
 
@@ -111,27 +115,29 @@ class Configuration:
         t_av_fl = dt.datetime.fromtimestamp(t_av)
         return t_av_fl.strftime(fmt)  # av. time as string
 
-    @staticmethod
-    def dict_to_ureal(d):
-        """
-        Use items in dictionary d to construct a gtc uncertain number.
-        :param d: Dictionary having items: 'value', 'uncert', 'dof' and 'label'.
-        :return: gtc.ureal (or default ureal if d is missing items).
-        """
-        try:
-            val = d['value']
-            un = d['uncert']
-            df = d['dof']
-            lbl = d['label']
-        except KeyError as msg:
-            print('{} - missing info for ureal!'.format(msg))
-            return gtc.ureal(0, 0, label='default')
-        else:
-            return gtc.ureal(val, un, df, label=lbl)
+    # @staticmethod
+    # def dict_to_ureal(d):
+    #     """
+    #     Use items in dictionary d to construct a gtc uncertain number.
+    #     :param d: Dictionary having items: 'value', 'uncert', 'dof' and 'label'.
+    #     :return: gtc.ureal (or default ureal if d is missing items).
+    #     """
+    #     try:
+    #         val = d['value']
+    #         un = d['uncert']
+    #         df = d['dof']
+    #         lbl = d['label']
+    #     except KeyError as msg:
+    #         print('{} - missing info for ureal!'.format(msg))
+    #         return gtc.ureal(0, 0, label='default')
+    #     if df == 'inf':
+    #         df = math.inf
+    #     print('Attempting ureal: val={}; un={}; df={}'.format(val, un, df))
+    #     return gtc.ureal(val, un, df, label=lbl)
 
-    @staticmethod
-    def ureal_to_dict(u):
-        return {'value': u.x, 'uncert': u.u, 'dof': u.df, 'label': u.label}
+    # @staticmethod
+    # def ureal_to_dict(u):
+    #     return {'value': u.x, 'uncert': u.u, 'dof': u.df, 'label': u.label}
 
     @staticmethod
     def spec(res):
@@ -170,24 +176,10 @@ class Configuration:
         try:
             with open(filename, 'r') as fp:
                 json_str = self.strip_chars(fp.read(), '\t\n')
-            return json.loads(json_str)  # A dict
+            return json.loads(json_str, object_hook=self.decode_ureal)  # A dict
         except (FileNotFoundError, IOError) as e:
             print("Can't open file {}: {}".format(filename, e))
             return {}  # An empty dict
-
-    @staticmethod
-    def save_file(data, filename=DATA_FILENAME):
-        """
-        Write raw measurement data.
-        """
-        json_str = json.dumps(data, indent=4)
-        try:
-            with open(filename, 'w') as fp:
-                fp.write(json_str)
-            return 1
-        except IOError as e:
-            print("Can't open file {}: {}".format(filename, e))
-            return -1
 
     @staticmethod
     def strip_chars(oldstr, charlist=''):
@@ -204,26 +196,47 @@ class Configuration:
         return newstr
 
     @staticmethod
+    def decode_ureal(d):
+        if '__ureal__' in d:
+            dof = d['dof']
+            if d['dof'] == 'inf':
+                dof = math.inf  # (>= 1e6)
+            return gtc.ureal(d['value'], d['uncert'], dof, d['label'])
+        return d
+
+    @staticmethod
+    def save_file(data, filename=DATA_FILENAME):
+        """
+        Write raw measurement data.
+        """
+        json_str = json.dumps(data, indent=4, cls=UrealEncoder)
+        try:
+            with open(filename, 'w') as fp:
+                fp.write(json_str)
+            return 1
+        except IOError as e:
+            print("Can't open file {}: {}".format(filename, e))
+            return -1
+
+    @staticmethod
     def get_res_list():
         return dev.RM.list_resources()
 
-    # def refresh_params(directory):
-    #     """
-    #     Refreshes state-of-knowledge of resistors and instruments.
-    #     Returns:
-    #     RES_DATA: Dictionary of known resistance standards.
-    #     INSTR_DATA: Dictionary of instrument parameter dictionaries,
-    #     both keyed by description.
-    #     """
-    #     with open(os.path.join(directory, resistor_file), 'r') as new_resistor_fp:
-    #         resistor_str = strip_chars(new_resistor_fp.read(), '\t\n')  # Remove tabs & newlines
-    #     res_data = json.loads(resistor_str)
-    #
-    #     with open(os.path.join(directory, instrument_file), 'r') as new_instr_fp:
-    #         instr_str = strip_chars(new_instr_fp.read(), '\t\n')
-    #     instr_data = json.loads(instr_str)
-    #
-    #     return res_data, instr_data
+
+class UrealEncoder(json.JSONEncoder):
+    """
+    Over-writing default encoder to deal with ureals.
+    This removes the need for a ureal_to_dict() fn.
+    """
+    def default(self, obj):
+        if isinstance(obj, gtc.type_a.UncertainReal):  # gtc.type_a
+            return {'__ureal__': True,
+                    'value': obj.x,
+                    'uncert': obj.u,
+                    'dof': obj.df,
+                    'label': obj.label}
+        else:
+            return super().default(obj)
 
 
 # class Channel:

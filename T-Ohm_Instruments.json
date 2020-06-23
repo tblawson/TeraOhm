@@ -13,6 +13,7 @@
 		"demo": true,
 		"role": null,
 		"T_correction": {
+			"__ureal__": true,
 			"value": 0.0,
 			"uncert": 7.6e-3,
 			"dof": 18.1,
@@ -27,6 +28,7 @@
 		"demo": true,
 		"role": null,
 		"T_correction": {
+			"__ureal__": true,
 			"value": 0.0,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -34,6 +36,7 @@
 			"Reference_comment": ""
 		},
 		"P_correction": {
+			"__ureal__": true,
 			"value": 0.0,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -41,6 +44,7 @@
 			"Reference_comment": ""
 		},
 		"RH_correction": {
+			"__ureal__": true,
 			"value": 0.0,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -55,9 +59,10 @@
 		"demo": true,
 		"role": null,
 		"T_correction": {
+			"__ureal__": true,
 			"value": 0.01,
 			"uncert": 8.6e-3,
-			"dof": "18.1",
+			"dof": 18.1,
 			"label": "GMH627T_cor",
 			"Reference_comment": "Temperature/2018/723. Units are deg C"
 		}

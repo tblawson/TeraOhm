@@ -11,14 +11,14 @@ import config
 import GTC
 
 
-total_runtime_per_ch = 205  # 210time in s
+# total_runtime_per_ch = 205  # 210time in s
 
 
 """
 Create a configuration from info stored in
 init, instruments & resistor files:
 """
-setup = config.Configuration()
+setup = config.Configuration('meas')  # Measurement configuration
 
 print('All possible channel labels:\n{}'.format(setup.chan_ids))
 print('All available visa resources:\n{}'.format(setup.get_res_list()))
@@ -149,6 +149,10 @@ Note that the number of temperature measurements
 will NOT match the number of resistance measurements...
 """
 setup.save_file(meas_results)
+
+"""
+Export raw measurements to csv files
+"""
 
 """
 ... and tidy up:

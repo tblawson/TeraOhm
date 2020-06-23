@@ -3,7 +3,7 @@
 	"ref_chan": 0,
 	"n_chans_in_use": 3,
 	"0" : {
-		"resistor": "H100M 10M",
+		"resistor": "G003 100M",
 		"gmh_probe": "GMH:s/n627",
 		"n_samples": 300,
 		"n_settled": 100,

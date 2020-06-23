@@ -1,6 +1,7 @@
 {
 	"C 1G": {
 		"R0_LV": {
+			"__ureal__": true,
 			"value": 1000124415,
 			"uncert": 13458,
 			"dof": 26,
@@ -8,6 +9,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"R0_HV": {
+			"__ureal__": true,
 			"value": 1000124415,
 			"uncert": 13458,
 			"dof": 26,
@@ -15,6 +17,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"TRef_LV": {
+			"__ureal__": true,
 			"value": 20,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -22,6 +25,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"TRef_HV": {
+			"__ureal__": true,
 			"value": 20,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -29,6 +33,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"VRef_LV": {
+			"__ureal__": true,
 			"value": 10,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -36,6 +41,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"VRef_HV": {
+			"__ureal__": true,
 			"value": 500,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -43,6 +49,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"alpha": {
+			"__ureal__": true,
 			"value": 1.13e-5,
 			"uncert": 1.4e-6,
 			"dof": 20,
@@ -50,6 +57,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"beta": {
+			"__ureal__": true,
 			"value": 0,
 			"uncert": 0,
 			"dof": "inf",
@@ -57,6 +65,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 			},
 		"gamma": {
+			"__ureal__": true,
 			"value": 0,
 			"uncert": 0,
 			"dof": "inf",
@@ -67,20 +76,23 @@
 	},
 	"G003 100M": {
 		"R0_LV": {
+			"__ureal__": true,
 			"value": 100012441.5,
 			"uncert": 135,
 			"dof": 26,
-			"label": "C1G_R0_LV",
+			"label": "G003_100M_R0_LV",
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"R0_HV": {
+			"__ureal__": true,
 			"value": 1000124415,
-			"uncert": 13458,
+			"uncert": 135,
 			"dof": 26,
 			"label": "G003_100M_R0_HV",
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"TRef_LV": {
+			"__ureal__": true,
 			"value": 20,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -88,6 +100,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"TRef_HV": {
+			"__ureal__": true,
 			"value": 20,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -95,6 +108,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"VRef_LV": {
+			"__ureal__": true,
 			"value": 10,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -102,6 +116,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"VRef_HV": {
+			"__ureal__": true,
 			"value": 500,
 			"uncert": 0.0,
 			"dof": "inf",
@@ -109,6 +124,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"alpha": {
+			"__ureal__": true,
 			"value": 1.13e-5,
 			"uncert": 1.4e-6,
 			"dof": 20,
@@ -116,6 +132,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"beta": {
+			"__ureal__": true,
 			"value": 0,
 			"uncert": 0,
 			"dof": "inf",
@@ -123,6 +140,7 @@
 			"Reference_comment": "THIS INFO IS WRONG!"
 			},
 		"gamma": {
+			"__ureal__": true,
 			"value": 0,
 			"uncert": 0,
 			"dof": "inf",
