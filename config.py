@@ -22,6 +22,9 @@ DATA_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurements.json')
 RESULTS_FILENAME = os.path.join(working_dir, 'T-Ohm_Results.json')
 
 
+# _____________________________________________________ #
+
+
 class Configuration:
     """
     Class to create a configuration object.
@@ -59,6 +62,11 @@ class Configuration:
         addr_6564 = self.instr_data['G6564']['str_addr']  # "GPIB0::5::INSTR"
         self.meter = dev.Instrument(addr_6530, can_talk=True)
         self.scanner = dev.Instrument(addr_6564)
+
+        # Create ambient conditions GMH sensor:
+        descr = self.init['ambient_probe']  # Usually 'GMH:s/n367'
+        port = self.instr_data[descr]['addr']
+        self.ambient_probe = dev.GMHSensor(descr, port)  # GMH probe for room temp & RH
 
         # Assign reference channel label:
         self.ref_chan_id = self.chan_ids[self.init['ref_chan']]
@@ -114,30 +122,6 @@ class Configuration:
         t_av /= n  # av. time as float (seconds from epoch)
         t_av_fl = dt.datetime.fromtimestamp(t_av)
         return t_av_fl.strftime(fmt)  # av. time as string
-
-    # @staticmethod
-    # def dict_to_ureal(d):
-    #     """
-    #     Use items in dictionary d to construct a gtc uncertain number.
-    #     :param d: Dictionary having items: 'value', 'uncert', 'dof' and 'label'.
-    #     :return: gtc.ureal (or default ureal if d is missing items).
-    #     """
-    #     try:
-    #         val = d['value']
-    #         un = d['uncert']
-    #         df = d['dof']
-    #         lbl = d['label']
-    #     except KeyError as msg:
-    #         print('{} - missing info for ureal!'.format(msg))
-    #         return gtc.ureal(0, 0, label='default')
-    #     if df == 'inf':
-    #         df = math.inf
-    #     print('Attempting ureal: val={}; un={}; df={}'.format(val, un, df))
-    #     return gtc.ureal(val, un, df, label=lbl)
-
-    # @staticmethod
-    # def ureal_to_dict(u):
-    #     return {'value': u.x, 'uncert': u.u, 'dof': u.df, 'label': u.label}
 
     @staticmethod
     def spec(res):
@@ -197,6 +181,12 @@ class Configuration:
 
     @staticmethod
     def decode_ureal(d):
+        """
+        Ensures gtc.ureals are reconstructed from json source string.
+        This removes the need for a dict_to_ureal() fn.
+        :param d: A dictionary representing a ureal
+        :return: a gtc.ureal (if '__ureal__' item is True); or the original dictionary.
+        """
         if '__ureal__' in d:
             dof = d['dof']
             if d['dof'] == 'inf':
@@ -222,10 +212,12 @@ class Configuration:
     def get_res_list():
         return dev.RM.list_resources()
 
+# _____________________________________________________ #
+
 
 class UrealEncoder(json.JSONEncoder):
     """
-    Over-writing default encoder to deal with ureals.
+    Over-writing default json encoder to deal with ureals.
     This removes the need for a ureal_to_dict() fn.
     """
     def default(self, obj):
@@ -237,15 +229,3 @@ class UrealEncoder(json.JSONEncoder):
                     'label': obj.label}
         else:
             return super().default(obj)
-
-
-# class Channel:
-#     def __init__(self, chan_no, t_sensor, res):
-#         """
-#         param chan_no (int): Scanner channel
-#         param t_sensor (GMHSensor): A GMHSensor object.
-#         param res (str): A description string of resistor.
-#         """
-#         self.chan_no = chan_no
-#         self.temp_sensor = t_sensor
-#         self.resistor = res

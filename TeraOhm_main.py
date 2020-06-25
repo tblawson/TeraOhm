@@ -8,7 +8,6 @@ T.Lawson
 
 import time
 import config
-import GTC
 
 
 # total_runtime_per_ch = 205  # 210time in s
@@ -70,6 +69,8 @@ Loop over scanner channels:
 """
 total_runtime_per_ch = int(input('Run-time per channel (s)? '))
 meas_results = {}
+room_temps = []
+room_RHs = []
 for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
     chan_lab = setup.chan_ids[chan]  # 'A01', 'A02', ...
     setup.scanner.send_cmd(chan_lab)
@@ -98,6 +99,8 @@ for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
         time.sleep(15)  # Below cmd needs to be given every <= 20 s to keep V_test on.
         setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements.
         temps.append(T_probe.measure('T')[0])  # Only need value, not unit-string
+        room_temps.append(setup.ambient_probe.measure('T')[0])
+        room_RHs.append(setup.ambient_probe.measure('RH')[0])
         run_time = time.time() - t_start
         countdown = total_runtime_per_ch - run_time
         print('{:0.1f} s to go...'.format(countdown))
@@ -143,16 +146,14 @@ for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
                    'V_test': V_test}
     meas_results.update({chan_lab: meas_result})
 
+meas_results.update({'ambient_T': room_temps, 'ambient_RH': room_RHs})
+
 """
 Write out raw measurement data - 
 Note that the number of temperature measurements
 will NOT match the number of resistance measurements...
 """
 setup.save_file(meas_results)
-
-"""
-Export raw measurements to csv files
-"""
 
 """
 ... and tidy up:
