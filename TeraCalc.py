@@ -79,12 +79,17 @@ for chan_label in meas_data.keys():  # 'A01', 'A02'...
                'V_test': meas_data[chan_label]['V_test'],
                'time': calc_setup.t_mean(meas_data[chan_label]['times'])}
 
+    """
+    Meter uncertainty specification.
+    - Based on range with largest uncertainty.
+    Assume zero-valued +/- max spec (dof = inf).
+    """
     Rx_calc = Rx_meas
     Rx_spec = GTC.ureal(0, calc_setup.spec(Rx_meas['value'].x))
     Rs_spec = GTC.ureal(0, calc_setup.spec(Rs_meas['value'].x))
     spec = max(Rx_spec.u, Rs_spec.u)
 
-    Rx_calc['value'] = Rs*Rx_meas['value']/Rs_meas['value'] + spec  # calc_setup.ureal_to_dict(Rs*Rx_meas['value']/Rs_meas['value'] + spec)
+    Rx_calc['value'] = Rs*Rx_meas['value']/Rs_meas['value'] + spec
 
     analysed_results.update({chan_label: Rx_calc})
 
