@@ -97,10 +97,10 @@ class Configuration:
         for ch in range(self.init['n_chans_in_use']):
             probe = self.init[str(ch)]['gmh_probe']
             if probe in self.instr_data:
-                print('{}: OK - Known instrument.'.format(probe))
+                print(f'{probe}: OK - Known instrument.')
                 continue
             else:
-                print('Unknown temperature probe {} specified for channel {}!'.format(probe, ch))
+                print(f'Unknown temperature probe {probe} specified for channel {ch}!')
 
     @staticmethod
     def t_mean(t_str_list):

@@ -2,7 +2,7 @@
 	"max_volts": 1000,
 	"ref_chan": 0,
 	"n_chans_in_use": 3,
-	"ambient_probe": "GMH:s/n367"
+	"ambient_probe": "GMH:s/n367",
 	"0" : {
 		"resistor": "G003 100M",
 		"gmh_probe": "GMH:s/n627",

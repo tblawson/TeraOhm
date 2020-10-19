@@ -111,7 +111,9 @@ for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
     # n_samples = int(summary_stats_dump.split()[-1])
     # print(n_samples)
     trace_buffer_dump = setup.meter.send_cmd('TRAC:DATA?')
-    V_test = float(setup.meter.send_cmd('SENS:OUT:VOLT?').split()[1])
+    V_test_reply = setup.meter.send_cmd('SENS:OUT:VOLT?')
+    print('SENS:OUT:VOLT?: {}'.format(V_test_reply))
+    V_test = float(V_test_reply.split()[1])
 
     print('Trace buffer:\n', trace_buffer_dump)
     print('Summary stats:\n', summary_stats_dump)
@@ -161,4 +163,3 @@ setup.save_file(meas_results)
 setup.meter.close()
 setup.scanner.close()
 config.dev.RM.close()
-

@@ -117,6 +117,7 @@ class Instrument(Device):
         if self.str_addr in RM.list_resources():
             try:
                 self.instr = RM.open_resource(self.str_addr)
+                self.instr.timeout = 5000  # 5s timeout should be plenty
             except visa.VisaIOError as err:
                 print(err)
                 print('Failed to open visa session to {}.'.format(self.str_addr))
