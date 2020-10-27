@@ -2,18 +2,10 @@
 	"C 1G": {
 		"R0_LV": {
 			"__ureal__": true,
-			"value": 1000124415,
+			"value": 1004238868,
 			"uncert": 13458,
 			"dof": 26,
 			"label": "C1G_R0_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
-		},
-		"R0_HV": {
-			"__ureal__": true,
-			"value": 1000124415,
-			"uncert": 13458,
-			"dof": 26,
-			"label": "C1G_R0_HV",
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"TRef_LV": {
@@ -24,28 +16,12 @@
 			"label": "C1G_TRef_LV",
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
-		"TRef_HV": {
-			"__ureal__": true,
-			"value": 20,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "C1G_TRef_HV",
-			"Reference_comment": "THIS INFO IS WRONG!"
-		},
 		"VRef_LV": {
 			"__ureal__": true,
 			"value": 10,
 			"uncert": 0.0,
 			"dof": "inf",
 			"label": "C1G_VRef_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
-		},
-		"VRef_HV": {
-			"__ureal__": true,
-			"value": 500,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "C1G_VRef_HV",
 			"Reference_comment": "THIS INFO IS WRONG!"
 		},
 		"alpha": {
