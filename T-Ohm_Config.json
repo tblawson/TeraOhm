@@ -4,8 +4,8 @@
 	"n_chans_in_use": 3,
 	"ambient_probe": "GMH:s/n367",
 	"0" : {
-		"resistor": "G003 100M",
-		"gmh_probe": "GMH:s/n627",
+		"resistor": "Al969 1M",
+		"gmh_probe": "GMH:s/n2I",
 		"comment": "",
 		"n_samples": 300,
 		"n_settled": 100,
@@ -14,7 +14,7 @@
 		"v_thresh": 10
 	},
 	"1": {
-		"resistor": "unknown1 100M",
+		"resistor": "C9736 10M",
 		"gmh_probe": "GMH:s/n628",
 		"comment": "",
 		"n_samples": 300,
@@ -24,7 +24,7 @@
 		"v_thresh": 10
 	},
 	"2": {
-		"resistor": "unknown2 100M",
+		"resistor": "G003 100M",
 		"gmh_probe": "GMH:s/n367",
 		"comment": "",
 		"n_samples": 300,

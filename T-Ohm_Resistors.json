@@ -1,128 +1,206 @@
 {
 	"C 1G": {
-		"R0_LV": {
+		"R0": {
 			"__ureal__": true,
 			"value": 1004238868,
-			"uncert": 13458,
-			"dof": 26,
-			"label": "C1G_R0_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"uncert": 6132,
+			"dof": 53,
+			"label": "C 1G_R0",
+			"Reference_comment": "HRBC.v1.1 C 1G:C9620 100M 21/07/2020 13:04:47, HRBC.v1.1 C 1G:H100M 1G 14/07/2020 11:19:59"
 		},
-		"TRef_LV": {
+		"TRef": {
 			"__ureal__": true,
-			"value": 20,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "C1G_TRef_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"value": 20.717,
+			"uncert": 0.036,
+			"dof": 6.2,
+			"label": "C 1G_TRef",
+			"Reference_comment": "HRBC.v1.1 C 1G:C9620 100M 21/07/2020 13:04:47, HRBC.v1.1 C 1G:H100M 1G 14/07/2020 11:19:59"
 		},
-		"VRef_LV": {
+		"VRef": {
 			"__ureal__": true,
-			"value": 10,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "C1G_VRef_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"value": 10.00002128,
+			"uncert": 2.7e-07,
+			"dof": 167,
+			"label": "C 1G_VRef",
+			"Reference_comment": "HRBC.v1.1 C 1G:C9620 100M 21/07/2020 13:04:47, HRBC.v1.1 C 1G:H100M 1G 14/07/2020 11:19:59"
 		},
 		"alpha": {
 			"__ureal__": true,
-			"value": 1.13e-5,
-			"uncert": 1.4e-6,
-			"dof": 20,
-			"label": "C1G_alpha",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"value": -3.5e-05,
+			"uncert": 6.1e-05,
+			"dof": 34,
+			"label": "C 1G_alpha",
+			"Reference_comment": "HRBC.v1.1 C 1G:C9620 100M 21/07/2020 13:04:47, HRBC.v1.1 C 1G:H100M 1G 14/07/2020 11:19:59"
 		},
-		"beta": {
-			"__ureal__": true,
-			"value": 0,
-			"uncert": 0,
-			"dof": "inf",
-			"label": "C1G_beta",
-			"Reference_comment": "THIS INFO IS WRONG!"
-			},
 		"gamma": {
 			"__ureal__": true,
-			"value": 0,
-			"uncert": 0,
-			"dof": "inf",
-			"label": "C1G_gamma",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"value": -2.9e-08,
+			"uncert": 7.8e-08,
+			"dof": 48,
+			"label": "C 1G_gamma",
+			"Reference_comment": "HRBC.v1.1 C 1G:C9620 100M 21/07/2020 13:04:47, HRBC.v1.1 C 1G:H100M 1G 14/07/2020 11:19:59"
 			},
-		"date": "15/02/2019"
+		"tau": {
+			"__ureal__": true,
+			"value": -2.0e-06,
+			"uncert": 4.2e-06,
+			"dof": 35,
+			"label": "C 1G_tau",
+			"Reference_comment": "HRBC.v1.1 C 1G:C9620 100M 21/07/2020 13:04:47, HRBC.v1.1 C 1G:H100M 1G 14/07/2020 11:19:59"
+			},
+		"date": "2020-07-18 09:27:11"
 	},
 	"G003 100M": {
-		"R0_LV": {
+		"R0": {
 			"__ureal__": true,
-			"value": 100012441.5,
-			"uncert": 135,
-			"dof": 26,
-			"label": "G003_100M_R0_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"value": 100001500,
+			"uncert": 779,
+			"dof": 213,
+			"label": "G003 100M_R0",
+			"Reference_comment": "HRBC.v1.1 G003 100M:H100M 10M 12/06/2019 13:55:44"
 		},
-		"R0_HV": {
+		"TRef": {
 			"__ureal__": true,
-			"value": 1000124415,
-			"uncert": 135,
-			"dof": 26,
-			"label": "G003_100M_R0_HV",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"value": 20.753,
+			"uncert": 0.051,
+			"dof": 3.3,
+			"label": "G003 100M_TRef",
+			"Reference_comment": "HRBC.v1.1 G003 100M:H100M 10M 12/06/2019 13:55:44"
 		},
-		"TRef_LV": {
+		"VRef": {
 			"__ureal__": true,
-			"value": 20,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "G003_100M_TRef_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
-		},
-		"TRef_HV": {
-			"__ureal__": true,
-			"value": 20,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "G003_100M_TRef_HV",
-			"Reference_comment": "THIS INFO IS WRONG!"
-		},
-		"VRef_LV": {
-			"__ureal__": true,
-			"value": 10,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "G003_100M_VRef_LV",
-			"Reference_comment": "THIS INFO IS WRONG!"
-		},
-		"VRef_HV": {
-			"__ureal__": true,
-			"value": 500,
-			"uncert": 0.0,
-			"dof": "inf",
-			"label": "G003_100M_VRef_HV",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"value": 10.00007097,
+			"uncert": 1.7e-07,
+			"dof": 54,
+			"label": "G003 100M_VRef",
+			"Reference_comment": "HRBC.v1.1 G003 100M:H100M 10M 12/06/2019 13:55:44"
 		},
 		"alpha": {
 			"__ureal__": true,
-			"value": 1.13e-5,
-			"uncert": 1.4e-6,
-			"dof": 20,
+			"value": 1.1e-05,
+			"uncert": 5.7e-05,
+			"dof": 2.6,
 			"label": "G003_100M_alpha",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"Reference_comment": "HRBC.v1.1 G003 100M:H100M 10M 12/06/2019 13:55:44"
 		},
-		"beta": {
-			"__ureal__": true,
-			"value": 0,
-			"uncert": 0,
-			"dof": "inf",
-			"label": "G003_100M_beta",
-			"Reference_comment": "THIS INFO IS WRONG!"
-			},
 		"gamma": {
 			"__ureal__": true,
-			"value": 0,
-			"uncert": 0,
-			"dof": "inf",
+			"value": -1.2e-08,
+			"uncert": 9.2e-08,
+			"dof": 6.0,
 			"label": "G003_100M_gamma",
-			"Reference_comment": "THIS INFO IS WRONG!"
+			"Reference_comment": "HRBC.v1.1 G003 100M:H100M 10M 12/06/2019 13:55:44"
 			},
-		"date": "15/02/2019"
+		"tau": {
+			"__ureal__": true,
+			"value": -7.7e-05,
+			"uncert": 0.000395,
+			"dof": 13,
+			"label": "G003_100M_tau",
+			"Reference_comment": "HRBC.v1.1 G003 100M:H100M 10M 12/06/2019 13:55:44"
+			},
+		"date": "2019-06-12 15:02:58"
+	},
+	"C9736 10M": {
+		"R0": {
+			"__ureal__": true,
+			"value": 10001376.2,
+			"uncert": 99.5,
+			"dof": 12,
+			"label": "C9736 10M_R0",
+			"Reference_comment": "HRBC.v1.1 C9736 10M:Al969 1M 09/07/2020 16:10:54"
+		},
+		"TRef": {
+			"__ureal__": true,
+			"value": 20.471,
+			"uncert": 0.051,
+			"dof": 3.2,
+			"label": "C9736 10M_TRef",
+			"Reference_comment": "HRBC.v1.1 C9736 10M:Al969 1M 09/07/2020 16:10:54"
+		},
+		"VRef": {
+			"__ureal__": true,
+			"value": 10.00002012,
+			"uncert": 4.6e-07,
+			"dof": 84,
+			"label": "C9736 10M_VRef",
+			"Reference_comment": "HRBC.v1.1 C9736 10M:Al969 1M 09/07/2020 16:10:54"
+		},
+		"alpha": {
+			"__ureal__": true,
+			"value": -2.2e-06,
+			"uncert": 3.31e-05,
+			"dof": 46,
+			"label": "C9736 10M_alpha",
+			"Reference_comment": "HRBC.v1.1 C9736 10M:Al969 1M 09/07/2020 16:10:54, HRBC.v1.1 C9736 10M:Al969 1M 19/11/2019 14:15:26, HRBC.v1.1 C9736 10M:Al969 1M 22/11/2019 11:27:15, HRBC.v1.1 C9736 10M:Al969 1M 29/10/2019 11:17:00"
+		},
+		"gamma": {
+			"__ureal__": true,
+			"value": 1.4e-08,
+			"uncert": 1.6e-08,
+			"dof": 99.9,
+			"label": "C9736 10M_gamma",
+			"Reference_comment": "HRBC.v1.1 C9736 10M:Al969 1M 09/07/2020 16:10:54, HRBC.v1.1 C9736 10M:Al969 1M 19/11/2019 14:15:26, HRBC.v1.1 C9736 10M:Al969 1M 22/11/2019 11:27:15, HRBC.v1.1 C9736 10M:Al969 1M 29/10/2019 11:17:00"
+			},
+		"tau": {
+			"__ureal__": true,
+			"value": 2.7e-09,
+			"uncert": 3.00e-08,
+			"dof": 19,
+			"label": "C9736 10M_tau",
+			"Reference_comment": "HRBC.v1.1 C9736 10M:Al969 1M 09/07/2020 16:10:54, HRBC.v1.1 C9736 10M:Al969 1M 19/11/2019 14:15:26, HRBC.v1.1 C9736 10M:Al969 1M 22/11/2019 11:27:15, HRBC.v1.1 C9736 10M:Al969 1M 29/10/2019 11:17:00"
+			},
+		"date": "2020-07-09 19:59:01"
+	},
+	"Al969 1M": {
+		"R0": {
+			"__ureal__": true,
+			"value": 1000004.4,
+			"uncert": 9.5,
+			"dof": 12,
+			"label": "Al969 1M_R0",
+			"Reference_comment": "HRBC.v1.1 Al969 1M:G493 100k 03/07/2020 10:02:16"
+		},
+		"TRef": {
+			"__ureal__": true,
+			"value": 20.511,
+			"uncert": 0.051,
+			"dof": 3.1,
+			"label": "Al969 1M_TRef",
+			"Reference_comment": "HRBC.v1.1 Al969 1M:G493 100k 03/07/2020 10:02:16"
+		},
+		"VRef": {
+			"__ureal__": true,
+			"value": 10.00001647,
+			"uncert": 4.4e-07,
+			"dof": 74,
+			"label": "Al969 1M_VRef",
+			"Reference_comment": "HRBC.v1.1 Al969 1M:G493 100k 03/07/2020 10:02:16"
+		},
+		"alpha": {
+			"__ureal__": true,
+			"value": -3.3e-06,
+			"uncert": 2.72e-05,
+			"dof": 21,
+			"label": "Al969 1M_alpha",
+			"Reference_comment": "Al969 1M original manufacturers calibration, HRBC.v1.1 Al969 1M:G493 100k 03/07/2020 10:02:16, HRBC.v1.1 Al969 1M:G493 100k 22/11/2019 16:45:41, HRBC.v1.1 Al969 1M:G493 100k 25/10/2019 12:58:04, HRBC.v1.1 Al969 1M:SR104r 10k 04/06/2019 13:45:07, HRBC.v1.1 Al969 1M:SR104r 10k 29/05/2019 11:44:17"
+		},
+		"gamma": {
+			"__ureal__": true,
+			"value": -2.0e-09,
+			"uncert": 2.26e-08,
+			"dof": 103,
+			"label": "Al969 1M_gamma",
+			"Reference_comment": "Al969 1M original manufacturers calibration, HRBC.v1.1 Al969 1M:G493 100k 03/07/2020 10:02:16, HRBC.v1.1 Al969 1M:G493 100k 22/11/2019 16:45:41, HRBC.v1.1 Al969 1M:G493 100k 25/10/2019 12:58:04, HRBC.v1.1 Al969 1M:SR104r 10k 04/06/2019 13:45:07, HRBC.v1.1 Al969 1M:SR104r 10k 29/05/2019 11:44:17"
+			},
+		"tau": {
+			"__ureal__": true,
+			"value": 2.3e-09,
+			"uncert": 1.67e-08,
+			"dof": 22,
+			"label": "Al969 1M_tau",
+			"Reference_comment": "Al969 1M original manufacturers calibration, HRBC.v1.1 Al969 1M:G493 100k 03/07/2020 10:02:16, HRBC.v1.1 Al969 1M:G493 100k 22/11/2019 16:45:41, HRBC.v1.1 Al969 1M:G493 100k 25/10/2019 12:58:04, HRBC.v1.1 Al969 1M:SR104r 10k 04/06/2019 13:45:07, HRBC.v1.1 Al969 1M:SR104r 10k 29/05/2019 11:44:17"
+			},
+		"date": "2020-07-03 12:10:54"
 	}
 }

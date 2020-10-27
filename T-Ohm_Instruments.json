@@ -21,6 +21,21 @@
 			"Reference_comment": "Temperature/2018/724. Units are deg C"
 		}
 	},
+	"GMH:s/n2I": {
+		"addr": ,
+		"str_addr": "COM",
+		"test": "T",
+		"demo": true,
+		"role": null,
+		"T_correction": {
+			"__ureal__": true,
+			"value": 0.01,
+			"uncert": 7.6e-3,
+			"dof": 18.1,
+			"label": "GMH2I_cor",
+			"Reference_comment": "Temperature/2017/658. Units are deg C"
+		}
+	},
 	"GMH:s/n367": {
 		"addr": 10,
 		"str_addr": "COM10",
