@@ -36,7 +36,7 @@ Initialise meter:
 setup.meter.send_cmd('SYST:VERB')
 setup.meter.send_cmd('MEAS:UNIT OHMS')
 trace_mode = input('Trace mode (KEEP or CLEAR)? ')
-setup.meter.send_cmd('TRAC:MODE {}'.format(trace_mode))  # Overwrite or append to previous measurements.
+setup.meter.send_cmd(f'TRAC:MODE {trace_mode}')  # Overwrite or append to previous measurements.
 setup.meter.send_cmd('TRIG:SOUR CONT')  # Continuous trigger mode.
 setup.meter.send_cmd('SENS:RANG AUTO')  # Auto range mode.
 setup.meter.send_cmd('SENS:POL AUTO')  # Auto-switch polarity during measurements.
@@ -73,9 +73,11 @@ room_temps = []
 room_RHs = []
 for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
     chan_lab = setup.chan_ids[chan]  # 'A01', 'A02', ...
+    setup.scanner.send_cmd('A00')  # Prime scanner for a change of channel.
+    time.sleep(0.2)
     setup.scanner.send_cmd(chan_lab)
     R_name = setup.init[str(chan)]['resistor']  # json keys are always str-type.
-    print('Resistor: {} on scanner chan {}'.format(R_name, chan_lab))
+    print(f'Resistor: {R_name} on scanner chan {chan_lab}')
     time.sleep(1)
 
     """

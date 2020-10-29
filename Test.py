@@ -45,7 +45,7 @@ def scantest():
     print('Running scan test...')
     try:
         for ch in CHANS:
-            print(ch, end = ' ')
+            print(ch, end=' ')
             instr_list['s'].write('A00')
             time.sleep(DELAY)
             instr_list['s'].write('A'+ch)
@@ -68,14 +68,14 @@ def end_session():
     sys.exit()
 
 
-def process(cmd):
-    [i, msg] = cmd.split('_')
+def process(c):
+    [i, msg] = c.split('_')
     try:
         if '?' in msg:
             rtn = instr_list[i].query(msg)  # Write cmd to instrument i, then read from i.
         else:
             instr_list[i].write(msg)  # Write msg to instrument i.
-            rtn = 'Write {} (No reply)'.format(msg)
+            rtn = f'Write {msg} (No reply)'
         time.sleep(DELAY)
         print(rtn)
     except visa.VisaIOError as err:
@@ -87,7 +87,7 @@ def process(cmd):
 # Main program loop follows...
 # ----------------------------
 print('Enter "m" (meter) or "s" (scanner), followed by "_" then command '
-      'or "q" to quit.\n')
+      'or "scantest" to test the scanner or "q" to quit.\n')
 
 while True:
     cmd = input('>> ')

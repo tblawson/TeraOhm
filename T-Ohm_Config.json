@@ -15,7 +15,7 @@
 	},
 	"1": {
 		"resistor": "C9736 10M",
-		"gmh_probe": "GMH:s/n628",
+		"gmh_probe": "GMH:s/n627",
 		"comment": "",
 		"n_samples": 300,
 		"n_settled": 100,
@@ -25,7 +25,7 @@
 	},
 	"2": {
 		"resistor": "G003 100M",
-		"gmh_probe": "GMH:s/n367",
+		"gmh_probe": "GMH:s/n628",
 		"comment": "",
 		"n_samples": 300,
 		"n_settled": 100,

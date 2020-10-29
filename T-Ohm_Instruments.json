@@ -7,8 +7,8 @@
 		"role": null
 	},
 	"GMH:s/n628": {
-		"addr": 5,
-		"str_addr": "COM5",
+		"addr": 9,
+		"str_addr": "COM9",
 		"test": "T",
 		"demo": true,
 		"role": null,
@@ -22,8 +22,8 @@
 		}
 	},
 	"GMH:s/n2I": {
-		"addr": ,
-		"str_addr": "COM",
+		"addr": 10,
+		"str_addr": "COM10",
 		"test": "T",
 		"demo": true,
 		"role": null,
@@ -37,8 +37,8 @@
 		}
 	},
 	"GMH:s/n367": {
-		"addr": 10,
-		"str_addr": "COM10",
+		"addr": 11,
+		"str_addr": "COM11",
 		"test": "RH",
 		"demo": true,
 		"role": null,
@@ -94,7 +94,7 @@
 	},
 	"G6564": {
 		"addr": 5,
-		"str_addr": "GPIB0::5::INSTR",
+		"str_addr": "GPIB0::7::INSTR",
 		"test": null,
 		"demo": true,
 		"role": null
