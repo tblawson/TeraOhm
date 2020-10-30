@@ -16,7 +16,7 @@ calc_setup = config.Configuration('calc')  # Analysis configuration
 """
 Import the raw measurements file to a dict:
 """
-meas_data = calc_setup.load_file('T-Ohm_Measurements.json')
+meas_data = calc_setup.load_file(config.DATA_FILENAME)
 
 """
 Gather reference resistor info:
@@ -36,21 +36,24 @@ Rs_meas = {'chan_no': ref_chan,
            'time': calc_setup.t_mean(meas_data[ref_chan_label]['times'])
            }
 
-# Choose reference value of Rs based on nearest test-voltage:
-V0_LV = calc_setup.res_data[Rs_name]['VRef_LV']
-V0_HV = calc_setup.res_data[Rs_name]['VRef_HV']
-if abs(V0_LV - Rs_Vtest) >= abs(V0_HV - Rs_Vtest):
-    V_suffix = '_HV'
-else:
-    V_suffix = '_LV'
-Rs_0 = calc_setup.res_data[Rs_name]['R0' + V_suffix]
-Rs_T0 = calc_setup.res_data[Rs_name]['TRef' + V_suffix]
-Rs_V0 = calc_setup.res_data[Rs_name]['VRef' + V_suffix]
+# V0_LV = calc_setup.res_data[Rs_name]['VRef_LV']
+# V0_HV = calc_setup.res_data[Rs_name]['VRef_HV']
+# if abs(V0_LV - Rs_Vtest) >= abs(V0_HV - Rs_Vtest):
+#     V_suffix = '_HV'
+# else:
+#     V_suffix = '_LV'
+
+Rs_0 = calc_setup.res_data[Rs_name]['R0']
+Rs_T0 = calc_setup.res_data[Rs_name]['TRef']
+Rs_V0 = calc_setup.res_data[Rs_name]['VRef']
 
 
 # Calculate corrected true value of Rs:
 Rs_alpha = calc_setup.res_data[Rs_name]['alpha']
-Rs_beta = calc_setup.res_data[Rs_name]['beta']
+if 'beta' in calc_setup.res_data[Rs_name]:
+    Rs_beta = calc_setup.res_data[Rs_name]['beta']
+else:
+    Rs_beta = 0
 Rs_gamma = calc_setup.res_data[Rs_name]['gamma']
 Rs_dT = Rs_meas['Temp'] - Rs_T0
 Rs_dV = Rs_meas['V_test'] - Rs_V0
@@ -68,6 +71,8 @@ Calculate values of all non-reference resistors:
 analysed_results.update({ref_chan_label: Rs_meas})
 
 for chan_label in meas_data.keys():  # 'A01', 'A02'...
+    if chan_label in ('ambient_T', 'ambient_RH'):
+        continue
     chan = calc_setup.channel_label_to_num(chan_label)
     if chan == ref_chan:
         continue
