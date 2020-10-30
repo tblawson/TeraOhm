@@ -20,8 +20,6 @@ INSTR_FILENAME = os.path.join(working_dir, 'T-Ohm_Instruments.json')
 RES_FILENAME = os.path.join(working_dir, 'T-Ohm_Resistors.json')
 DATA_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurements.json')
 RESULTS_FILENAME = os.path.join(working_dir, 'T-Ohm_Results.json')
-
-
 # _____________________________________________________ #
 
 
