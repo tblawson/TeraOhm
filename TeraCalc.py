@@ -87,9 +87,10 @@ for chan_label in meas_data.keys():  # 'A01', 'A02'...
     Rx_calc = Rx_meas
     Rx_spec = GTC.ureal(0, calc_setup.spec(Rx_meas['value'].x))
     Rs_spec = GTC.ureal(0, calc_setup.spec(Rs_meas['value'].x))
-    spec = max(Rx_spec.u, Rs_spec.u)
+    u_spec = max(Rx_spec.u, Rs_spec.u)
+    spec = GTC.ureal(0, u_spec)
 
-    Rx_calc['value'] = Rs*Rx_meas['value']/Rs_meas['value'] + spec
+    Rx_calc['value'] = Rs * Rx_meas['value'] / Rs_meas['value'] + spec
 
     analysed_results.update({chan_label: Rx_calc})
 
