@@ -10,6 +10,7 @@ Analyse raw data captured during run of TeraOhm_main.py
 import config
 import GTC
 
+
 calc_setup = config.Configuration('calc')  # Analysis configuration
 
 
@@ -30,7 +31,7 @@ Rs_Vtest = meas_data[ref_chan_label]['V_test']
 Rs_meas = {'chan_no': ref_chan,
            'reference': True,
            'name': Rs_name,
-           'value': GTC.ta.estimate(meas_data[ref_chan_label]['R_vals']),  # ureal
+           'value(meas)': GTC.ta.estimate(meas_data[ref_chan_label]['R_vals']),  # ureal
            'Temp': GTC.ta.estimate(meas_data[ref_chan_label]['temperatures']),  # ureal
            'V_test': Rs_Vtest,
            'time': calc_setup.t_mean(meas_data[ref_chan_label]['times'])
@@ -58,6 +59,7 @@ Rs_gamma = calc_setup.res_data[Rs_name]['gamma']
 Rs_dT = Rs_meas['Temp'] - Rs_T0
 Rs_dV = Rs_meas['V_test'] - Rs_V0
 Rs = Rs_0*(1 + Rs_alpha*Rs_dT + Rs_beta*Rs_dT*Rs_dT + Rs_gamma*Rs_dV)
+Rs_meas.update({'value(true)': Rs})
 
 # Calculate mean ambient conditions:
 room_temp = GTC.ta.estimate(meas_data['ambient_T'])

@@ -65,6 +65,8 @@ class Configuration:
         descr = self.init['ambient_probe']  # Usually 'GMH:s/n367'
         port = self.instr_data[descr]['addr']
         self.ambient_probe = dev.GMHSensor(descr, port)  # GMH probe for room temp & RH
+        self.ambient_T_corrn = self.instr_data[descr]['T_correction']
+        self.ambient_RH_corrn = self.instr_data[descr]['RH_correction']
 
         # Assign reference channel label:
         self.ref_chan_id = self.chan_ids[self.init['ref_chan']]
