@@ -20,6 +20,8 @@ INSTR_FILENAME = os.path.join(working_dir, 'T-Ohm_Instruments.json')
 RES_FILENAME = os.path.join(working_dir, 'T-Ohm_Resistors.json')
 DATA_FILENAME = os.path.join(working_dir, 'T-Ohm_Measurements.json')
 RESULTS_FILENAME = os.path.join(working_dir, 'T-Ohm_Results.json')
+
+T_DEF = gtc.ureal(0, 0.05, 3)  # Temperature definition
 # _____________________________________________________ #
 
 

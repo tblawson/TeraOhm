@@ -10,8 +10,6 @@ import time
 import config
 
 
-T_DEF = GTC.ureal(0, 0.05, 3)  # Temperature definition
-
 # total_runtime_per_ch = 205  # 210time in s
 
 
@@ -103,7 +101,7 @@ for chan in range(setup.init['n_chans_in_use']):  # 0, 1, ...
     while run_time <= total_runtime_per_ch:
         time.sleep(15)  # Below cmd needs to be given every <= 20 s to keep V_test on.
         setup.meter.send_cmd('CONF:TEST:VOLT CONT')  # Continue measurements.
-        temps.append(T_probe.measure('T')[0] + T_corrn + T_DEF)  # Only need value, not unit-string
+        temps.append(T_probe.measure('T')[0] + T_corrn + config.T_DEF)  # Only need value, not unit-string
         room_temps.append(setup.ambient_probe.measure('T')[0] + setup.ambient_T_corrn)
         room_RHs.append(setup.ambient_probe.measure('RH')[0] + setup.ambient_RH_corrn)
         run_time = time.time() - t_start
