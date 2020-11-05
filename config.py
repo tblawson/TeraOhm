@@ -57,18 +57,19 @@ class Configuration:
 
         self.check_gmh_validity()
 
-        # Create meter and scanner instruments:
-        addr_6530 = self.instr_data['G6530']['str_addr']  # "GPIB0::4::INSTR"
-        addr_6564 = self.instr_data['G6564']['str_addr']  # "GPIB0::5::INSTR"
-        self.meter = dev.Instrument(addr_6530, can_talk=True)
-        self.scanner = dev.Instrument(addr_6564)
+        if mode == 'meas':
+            # Create meter and scanner instruments:
+            addr_6530 = self.instr_data['G6530']['str_addr']  # "GPIB0::4::INSTR"
+            addr_6564 = self.instr_data['G6564']['str_addr']  # "GPIB0::5::INSTR"
+            self.meter = dev.Instrument(addr_6530, can_talk=True)
+            self.scanner = dev.Instrument(addr_6564)
 
-        # Create ambient conditions GMH sensor:
-        descr = self.init['ambient_probe']  # Usually 'GMH:s/n367'
-        port = self.instr_data[descr]['addr']
-        self.ambient_probe = dev.GMHSensor(descr, port)  # GMH probe for room temp & RH
-        self.ambient_T_corrn = self.instr_data[descr]['T_correction']
-        self.ambient_RH_corrn = self.instr_data[descr]['RH_correction']
+            # Create ambient conditions GMH sensor:
+            descr = self.init['ambient_probe']  # Usually 'GMH:s/n367'
+            port = self.instr_data[descr]['addr']
+            self.ambient_probe = dev.GMHSensor(descr, port)  # GMH probe for room temp & RH
+            self.ambient_T_corrn = self.instr_data[descr]['T_correction']
+            self.ambient_RH_corrn = self.instr_data[descr]['RH_correction']
 
         # Assign reference channel label:
         self.ref_chan_id = self.chan_ids[self.init['ref_chan']]
