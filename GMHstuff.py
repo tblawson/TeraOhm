@@ -30,6 +30,7 @@ MEAS_ALIAS = {'T': 'Temperature', 'P': 'Absolute Pressure', 'RH': 'Rel. Air Humi
 
 C_LANG_OFFSET = ct.c_int16(4096)  # English language-offset
 
+VERBOSE = False  # If True, print more debug meassages.
 
 class GMHSensor:
     """
@@ -484,7 +485,8 @@ class GMHSensor:
                 chan = self._info[MEAS_ALIAS[meas]][0]
                 unit_str = self._info[MEAS_ALIAS[meas]][1]
                 meas = (self.c_flData.value, unit_str)
-                print('Measured {} from port {}, chan: {}.'.format(meas, self.port, chan))
-                print(self._info)
+                if VERBOSE:
+                    print('Measured {} from port {}, chan: {}.'.format(meas, self.port, chan))
+                    print(self._info)
         self.close()
         return meas
