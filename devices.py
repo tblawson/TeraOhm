@@ -28,7 +28,9 @@ class GMHSensor(GMH.GMHSensor):
         # self.port = int(INSTR_DATA[self.descr]['addr'])
         super().__init__(self.port)
         self.demo = True
-        self.set_power_off_time(120)  # Ensure sensor stays on during whole run.
+        # Ensure sensor stays on during whole run:
+        p_off_time = self.set_power_off_time(120)
+        print(f'Power-off time for {self.descr} set to {p_off_time} mins.')
 
     def test(self, meas):
         """
